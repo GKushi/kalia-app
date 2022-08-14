@@ -1,6 +1,16 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "jsx": "react",
+    "strict": true,
+    "noImplicitReturns":true,
+    "noUnusedLocals":true,
+    "noUnusedParameters": true,
+    "baseUrl": ".",
+      "paths": {
+          "@/components/*": ["./components/*"],
+          "@/utils/*": ["./utils/*"],
+          "@/screens/*": ["./screens/*"]
+      },
   }
 }
