@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { View, TouchableOpacity } from "react-native";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { AccessibilityRole } from "react-native";
@@ -16,7 +16,7 @@ interface TabBarItemProps {
   onPress: () => void;
   onLongPress: () => void;
   name: string;
-  children: JSX.Element | null;
+  children: ReactNode;
 }
 
 const TabBarItem: React.FC<TabBarItemProps> = ({
@@ -29,7 +29,7 @@ const TabBarItem: React.FC<TabBarItemProps> = ({
   children,
 }) => {
   return (
-    <View className="flex-1 justify-center items-center space-y-4">
+    <View className="flex-1 justify-center items-center space-y-1">
       <TouchableOpacity
         accessibilityRole={accessibilityRole}
         accessibilityState={isFocused ? { selected: true } : {}}
@@ -44,7 +44,7 @@ const TabBarItem: React.FC<TabBarItemProps> = ({
         )}
       </TouchableOpacity>
       {name !== "New" && isFocused ? (
-        <View className="w-2 h-2 bg-purple items-center rounded-full" />
+        <View className="w-[6px] h-[6px] bg-purple items-center rounded-full" />
       ) : (
         <View></View>
       )}
