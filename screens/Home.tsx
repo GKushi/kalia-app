@@ -13,16 +13,34 @@ const Home: React.FC = () => {
         <View className="flex-row justify-between">
           <View className="w-[45%]">
             <Card title="Do spłacenia">
-              <Text className="text-2xl text-danger font-semibold">
+              <Text
+                numberOfLines={1}
+                className="text-2xl text-danger font-semibold"
+              >
                 -454.42zł
               </Text>
-              <Text className="text-2xl text-danger font-semibold">-450zł</Text>
-              <Text className="text-2xl text-danger font-semibold">-450zł</Text>
+              <Text
+                numberOfLines={1}
+                className="text-2xl text-danger font-semibold"
+              >
+                -450zł
+              </Text>
+              <Text
+                numberOfLines={1}
+                className="text-2xl text-danger font-semibold"
+              >
+                -450zł
+              </Text>
             </Card>
           </View>
           <View className="w-[45%]">
             <Card title="Do odebrania">
-              <Text className="text-2xl text-danger font-semibold">-450zł</Text>
+              <Text
+                numberOfLines={1}
+                className="text-2xl text-danger font-semibold"
+              >
+                -450zł
+              </Text>
             </Card>
           </View>
         </View>

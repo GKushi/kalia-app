@@ -59,7 +59,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({
 }) => {
   return (
     <View
-      className="flex-row h-[100px] absolute left-0 bottom-0 right-0 bg-white rounded-3xl"
+      className="flex-row h-[100px] absolute left-0 bottom-0 right-0 bg-white rounded-t-3xl"
       style={{
         elevation: 24,
         shadowOffset: { width: 0, height: -2 },
