@@ -7,7 +7,7 @@ const App: React.FC = () => {
   return (
     <TailwindProvider>
       <Navigation />
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
     </TailwindProvider>
   );
 };

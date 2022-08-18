@@ -72,6 +72,20 @@ const Home: React.FC = () => {
             </Text>
           </Card>
         </View>
+        <View>
+          <Card title="Termin najbliższego odbioru">
+            <Text className="text-2xl text-black font-semibold">
+              19.04.2016
+            </Text>
+          </Card>
+        </View>
+        <View>
+          <Card title="Termin najbliższego odbioru">
+            <Text className="text-2xl text-black font-semibold">
+              19.04.2016
+            </Text>
+          </Card>
+        </View>
         <View className="h-[120px]" />
       </ScrollView>
     </SafeAreaView>
