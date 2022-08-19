@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "kalia-app",
-    "slug": "kalia-app",
+    "name": "Kalia",
+    "slug": "kalia",
+    "owner": "gkushi",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,13 +19,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.gkushi.kalia"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#B0B8DB"
-      }
+      },
+      "package": "com.gkushi.kalia"
     }
   }
 }

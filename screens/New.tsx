@@ -12,7 +12,7 @@ const New: React.FC = () => {
 
   return (
     <SafeAreaView className="bg-blue h-full">
-      <View className="items-center p-8">
+      <View className="items-center py-8">
         <Text className="font-bold text-white text-2xl">Dodaj nowy</Text>
       </View>
       <TabContent

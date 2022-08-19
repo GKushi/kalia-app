@@ -16,9 +16,9 @@ interface Tab {
 
 const Tab: React.FC<Tab> = ({ name, active, onPress }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.5}>
       <View
-        className={`py-2 px-5 rounded-t-3xl border-white border-[1.5px] ${
+        className={`py-1 px-5 rounded-t-3xl border-white border-[1.5px] ${
           active ? "bg-white" : "bg-blue -mt-2 border-b-0"
         }`}
       >

@@ -36,6 +36,7 @@ const TabBarItem: React.FC<TabBarItemProps> = ({
         accessibilityLabel={accessibilityLabel}
         onPress={onPress}
         onLongPress={onLongPress}
+        activeOpacity={0.5}
       >
         {name === "New" ? (
           <View className="bg-purple rounded-full p-2">{children}</View>
