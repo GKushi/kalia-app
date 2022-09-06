@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, AccessibilityRole } from "react-native";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { AccessibilityRole } from "react-native";
 import {
   HomeIcon as HomeIconOutline,
   ClipboardListIcon,

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { View } from "react-native";
 import Home from "@/screens/Home";
 import List from "@/screens/List";
 import Settings from "@/screens/Settings";
@@ -19,6 +20,8 @@ type RootStackParamList = {
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
 const Navigation: React.FC = () => {
+  const [showTabBar, setShowTabBar] = useState<boolean>(true);
+
   return (
     <SafeAreaProvider>
       <NavigationContainer>
@@ -28,11 +31,18 @@ const Navigation: React.FC = () => {
           screenOptions={{
             headerShown: false,
           }}
-          tabBar={(props) => <TabBar {...props} />}
+          tabBar={(props) => (
+            <View className={`${showTabBar ? "z-0" : "z-[-1]"}`}>
+              <TabBar {...props} />
+            </View>
+          )}
         >
           <Tab.Screen name="Home" component={Home} />
           <Tab.Screen name="List" component={List} />
-          <Tab.Screen name="Settings" component={Settings} />
+          <Tab.Screen
+            name="Settings"
+            children={() => <Settings setShowTabBar={setShowTabBar} />}
+          />
           <Tab.Screen name="New" component={New} />
         </Tab.Navigator>
       </NavigationContainer>
