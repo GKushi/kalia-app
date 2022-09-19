@@ -93,10 +93,6 @@ const TabBar: React.FC<BottomTabBarProps> = ({
         };
 
         const icon = (name: string): JSX.Element | null => {
-          interface iconProps {
-            color: string;
-            size: string;
-          }
           const iconProps: iconProps = {
             color: isFocused ? "#CC1CCF" : "#B0B8DB",
             size: "30",

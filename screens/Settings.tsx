@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SettingsCard from "@/components/SettingsCard";
@@ -7,6 +7,7 @@ import Theme from "@/components/modal/Theme";
 import Currency from "@/components/modal/Currency";
 import Language from "@/components/modal/Language";
 import Alerts from "@/components/modal/Alerts";
+import Modal from "@/components/modal/Modal";
 
 interface SettingsProps {
   setShowTabBar: Dispatch<SetStateAction<boolean>>;
@@ -17,24 +18,41 @@ interface SettingCard {
 }
 
 const Settings: React.FC<SettingsProps> = ({ setShowTabBar }) => {
-  const [toggleIsShowing, setModal, modal] = useModal(setShowTabBar);
+  const [modal, setTitle, toggleIsShowing] = useModal(setShowTabBar);
+  const [modalContent, setModalContent] = useState<string>("");
 
   const toggleModal = (name: string) => {
     switch (name) {
       case "theme":
-        setModal("Wybierz motyw", <Theme />);
+        setTitle("Wybierz motyw");
         break;
       case "currency":
-        setModal("Wybierz domyślną walutę", <Currency />);
+        setTitle("Wybierz domyślną walutę");
         break;
       case "language":
-        setModal("Wybierz język", <Language />);
+        setTitle("Wybierz język");
         break;
       case "alerts":
-        setModal("Powiadomienia", <Alerts />);
+        setTitle("Powiadomienia");
         break;
     }
+    setModalContent(name);
     toggleIsShowing();
+  };
+
+  const modalChild = () => {
+    switch (modalContent) {
+      case "theme":
+        return <Theme />;
+      case "currency":
+        return <Currency />;
+      case "language":
+        return <Language />;
+      case "alerts":
+        return <Alerts />;
+      default:
+        return null;
+    }
   };
 
   const settingsCards: SettingCard[] = [
@@ -66,7 +84,7 @@ const Settings: React.FC<SettingsProps> = ({ setShowTabBar }) => {
           </View>
         </ScrollView>
       </SafeAreaView>
-      {modal}
+      <Modal modal={modal}>{modalChild()}</Modal>
     </>
   );
 };

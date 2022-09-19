@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "@/screens/Home";
 import List from "@/screens/List";
 import Settings from "@/screens/Settings";
@@ -43,7 +43,10 @@ const Navigation: React.FC = () => {
             name="Settings"
             children={() => <Settings setShowTabBar={setShowTabBar} />}
           />
-          <Tab.Screen name="New" component={New} />
+          <Tab.Screen
+            name="New"
+            children={() => <New setShowTabBar={setShowTabBar} />}
+          />
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

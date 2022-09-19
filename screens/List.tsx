@@ -106,6 +106,7 @@ const List: React.FC = () => {
                     title={record.title}
                     name={record.name}
                     value={record.value}
+                    urgent={record.urgent}
                     leftSwipe={{ title: "Usuń" }}
                     rightSwipe={{ title: "Zebrane" }}
                   />
@@ -117,6 +118,7 @@ const List: React.FC = () => {
                     title={record.title}
                     name={record.name}
                     value={record.value}
+                    urgent={record.urgent}
                     leftSwipe={{ title: "Usuń" }}
                     rightSwipe={{ title: "Zebrane" }}
                   />
