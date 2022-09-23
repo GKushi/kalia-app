@@ -17,7 +17,7 @@ const Card: React.FC<CardProps> = ({ children, title }) => {
         shadowRadius: 10,
       }}
     >
-      <Text className="text-black text-sm">{title}</Text>
+      <Text className="text-black text-sm text-center">{title}</Text>
       <View className="items-center">{children}</View>
     </View>
   );
