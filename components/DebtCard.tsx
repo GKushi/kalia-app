@@ -3,14 +3,15 @@ import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Swipable from "react-native-gesture-handler/Swipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { convertDateToString } from "@/utils/utils";
 
 interface DebtCardProps {
-  title: string;
-  name: string;
-  endDate?: string;
-  startDate?: string;
+  title: string | null;
+  name: string | null;
+  endDate: number | null;
+  startDate: number | null;
   value?: string;
-  urgent?: boolean;
+  type: ItemType;
   leftSwipe?: {
     title: string;
     handler?: () => void;
@@ -26,7 +27,7 @@ const DebtCard: React.FC<DebtCardProps> = ({
   endDate,
   startDate,
   value,
-  urgent,
+  type,
   leftSwipe,
   rightSwipe,
 }) => {
@@ -45,6 +46,7 @@ const DebtCard: React.FC<DebtCardProps> = ({
       </View>
     );
   };
+
   const rightActions = () => {
     if (!rightSwipe) return null;
     return (
@@ -59,6 +61,15 @@ const DebtCard: React.FC<DebtCardProps> = ({
         </TouchableOpacity>
       </View>
     );
+  };
+
+  const isUrgent = (): boolean => {
+    if (!endDate) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (endDate <= today.getTime()) return true;
+    return false;
   };
 
   return (
@@ -81,19 +92,21 @@ const DebtCard: React.FC<DebtCardProps> = ({
         >
           <View
             className={`bg-white rounded-2xl items-center w-full border-[1px] ${
-              urgent ? "border-danger" : "border-blue"
+              isUrgent() ? "border-danger" : "border-blue"
             } h-[100px] flex-row space-x-2`}
           >
             <View
               className={`h-full border-[1px] ${
-                urgent ? "border-danger" : "border-blue"
-              } rounded-2xl justify-center items-center px-2 w-[35%]`}
+                isUrgent() ? "border-danger" : "border-blue"
+              } rounded-2xl justify-center items-center px-2 w-[40%]`}
             >
               <Text
-                className="text-2xl text-danger font-semibold"
+                className={`text-2xl ${
+                  type === "debt" ? "text-danger" : "text-success"
+                } font-semibold`}
                 numberOfLines={1}
               >
-                {value}
+                {`${type === "debt" ? "-" : "+"}${value}`}
               </Text>
             </View>
             <View className="h-full max-w-[60%] justify-center">
@@ -104,10 +117,10 @@ const DebtCard: React.FC<DebtCardProps> = ({
                 {name}
               </Text>
               <Text className="text-[10px]" numberOfLines={1}>
-                Termin spłaty: {endDate ? endDate : "--"}
+                Termin spłaty: {endDate ? convertDateToString(endDate) : "--"}
               </Text>
               <Text className="text-[10px]" numberOfLines={1}>
-                Od: {startDate ? startDate : "--"}
+                Od: {startDate ? convertDateToString(startDate) : "--"}
               </Text>
             </View>
           </View>

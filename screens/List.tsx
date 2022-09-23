@@ -1,90 +1,58 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
 import DebtCard from "@/components/DebtCard";
 import TabContent from "@/components/TabContent";
+import { getItems, deleteItem, setItemDone } from "@/utils/database";
 
 const List: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>("first");
+  const [debts, setDebts] = useState<Item[] | undefined>();
+  const [dues, setDues] = useState<Item[] | undefined>();
 
   const handleTabPress = (tab: ActiveTab): void => {
     setActiveTab(tab);
   };
 
-  const firstrecords = [
-    {
-      id: "1",
-      title: "Za keksik",
-      name: "Kasper Gaworski",
-      value: "123123124",
-      urgent: true,
-    },
-    {
-      id: "13412",
-      title: "Zasdasd",
-      name: "Kaspeasdworski",
-      value: "12123124 dolars",
-      urgent: false,
-    },
-    {
-      id: "16547567",
-      title: "Zauyiiyuksik",
-      name: "Ksdfsdfsdf Gaworski",
-      value: "1243124 dol",
-      urgent: true,
-    },
-    {
-      id: "123459768",
-      title: "Zasdfsdeksik",
-      name: "Kaspers fdsdfsdfrski",
-      value: "14 $",
-      urgent: false,
-    },
-    {
-      id: "1212",
-      title: "Zasdfsdfksik",
-      name: "Kaspesdfsdfsdf orski",
-      value: "124 zł",
-      urgent: true,
-    },
-  ];
-  const secondrecords = [
-    {
-      id: "108978",
-      title: "Zaik",
-      name: "Ka Gaworski",
-      value: "12124",
-      urgent: false,
-    },
-    {
-      id: "1124466",
-      title: "Zaasd",
-      name: "Kaspeasdworski",
-      value: "1212 olars",
-      urgent: false,
-    },
-    {
-      id: "1234534",
-      title: "Zadfgiyuksik",
-      name: "Ksdfs orski",
-      value: "1243124 dol",
-      urgent: true,
-    },
-    {
-      id: "1876434256",
-      title: "Zasksik",
-      name: "Kasp sdfrski",
-      value: "14 $",
-      urgent: true,
-    },
-    {
-      id: "112343454568634587",
-      title: "Zasdfsdfksik",
-      name: "Kasp df orski",
-      value: "12 zł",
-      urgent: false,
-    },
-  ];
+  const fetchItems = async (type: ItemType) => {
+    await getItems(type)
+      .then((r) => {
+        if (type === "debt") setDebts(r);
+        if (type === "due") setDues(r);
+        console.log("sucess fetching data");
+      })
+      .catch(() => console.log("error fetching data"));
+  };
+
+  const deleteHandler = async (id: number, type: ItemType) => {
+    await deleteItem(id, type)
+      .then(() => {
+        console.log("success deleting item");
+        fetchItems(type);
+      })
+      .catch(() => console.log("error deleting item"));
+  };
+
+  const setItemDoneHandler = async (
+    item: Omit<DoneItem, "id">,
+    itemId: number
+  ) => {
+    await setItemDone(item)
+      .then(() => {
+        deleteHandler(itemId, item.type);
+        fetchItems(item.type);
+        console.log("success setting item done");
+      })
+      .catch(() => console.log("error setting item done"));
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      if (activeTab === "first") fetchItems("debt");
+      if (activeTab === "second") fetchItems("due");
+    }, [activeTab])
+  );
 
   return (
     <SafeAreaView className="bg-blue h-full">
@@ -99,31 +67,80 @@ const List: React.FC = () => {
           className="space-y-4 px-4 mt-10 h-full"
           showsVerticalScrollIndicator={false}
         >
-          {activeTab === "first"
-            ? firstrecords.map((record) => (
-                <View key={record.id}>
-                  <DebtCard
-                    title={record.title}
-                    name={record.name}
-                    value={record.value}
-                    urgent={record.urgent}
-                    leftSwipe={{ title: "Usuń" }}
-                    rightSwipe={{ title: "Zebrane" }}
-                  />
-                </View>
-              ))
-            : secondrecords.map((record) => (
-                <View key={record.id}>
-                  <DebtCard
-                    title={record.title}
-                    name={record.name}
-                    value={record.value}
-                    urgent={record.urgent}
-                    leftSwipe={{ title: "Usuń" }}
-                    rightSwipe={{ title: "Zebrane" }}
-                  />
-                </View>
-              ))}
+          {activeTab === "first" && debts ? (
+            debts.map((record) => (
+              <View key={record.id}>
+                <DebtCard
+                  title={record.person}
+                  name={record.description}
+                  value={`${record.value} ${record.currency}`}
+                  startDate={record.start}
+                  endDate={record.end}
+                  type="debt"
+                  leftSwipe={{
+                    title: "Usuń",
+                    handler: () => {
+                      deleteHandler(record.id, "debt");
+                    },
+                  }}
+                  rightSwipe={{
+                    title: "Oddane",
+                    handler: () => {
+                      setItemDoneHandler(
+                        {
+                          person: record.person,
+                          description: record.description,
+                          value: record.value,
+                          currency: record.currency,
+                          type: "debt",
+                        },
+                        record.id
+                      );
+                    },
+                  }}
+                />
+              </View>
+            ))
+          ) : (
+            <></>
+          )}
+          {activeTab === "second" && dues ? (
+            dues.map((record) => (
+              <View key={record.id}>
+                <DebtCard
+                  title={record.person}
+                  name={record.description}
+                  value={`${record.value} ${record.currency}`}
+                  startDate={record.start}
+                  endDate={record.end}
+                  type="due"
+                  leftSwipe={{
+                    title: "Usuń",
+                    handler: () => {
+                      deleteHandler(record.id, "due");
+                    },
+                  }}
+                  rightSwipe={{
+                    title: "Zebrane",
+                    handler: () => {
+                      setItemDoneHandler(
+                        {
+                          person: record.person,
+                          description: record.description,
+                          value: record.value,
+                          currency: record.currency,
+                          type: "due",
+                        },
+                        record.id
+                      );
+                    },
+                  }}
+                />
+              </View>
+            ))
+          ) : (
+            <></>
+          )}
           <View className="h-[200px]" />
         </ScrollView>
       </TabContent>
