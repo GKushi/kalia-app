@@ -4,7 +4,6 @@ import {
   LocaleConfig,
   DateData,
 } from "react-native-calendars";
-import { DateObj } from "@/screens/New";
 
 interface CalendarProps {
   dayPressHandler: (day: DateData) => void;
