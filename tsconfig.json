@@ -10,7 +10,8 @@
       "paths": {
           "@/components/*": ["./components/*"],
           "@/utils/*": ["./utils/*"],
-          "@/screens/*": ["./screens/*"]
+          "@/screens/*": ["./screens/*"],
+          "@/types/*": ["./types/*"]
       },
   }
 }

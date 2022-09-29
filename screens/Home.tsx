@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 import Card from "@/components/Card";
 import { getDoneItems, getItems } from "@/utils/database";
 import { getClosestDate, countDoneSum } from "@/utils/utils";
@@ -17,21 +18,36 @@ const Home: React.FC = () => {
         setDebts(r);
         console.log("sucess fetching debts");
       })
-      .catch(() => console.log("error fetching debts"));
+      .catch(() =>
+        Toast.show({
+          type: "error",
+          text1: "Coś poszło nie tak :(",
+        })
+      );
 
     await getItems("due")
       .then((r) => {
         setDues(r);
         console.log("sucess fetching dues");
       })
-      .catch(() => console.log("error fetching dues"));
+      .catch(() =>
+        Toast.show({
+          type: "error",
+          text1: "Coś poszło nie tak :(",
+        })
+      );
 
     await getDoneItems()
       .then((r) => {
         setDoneItems(r);
         console.log("success fetching done items");
       })
-      .catch(() => console.log("error fetching done items"));
+      .catch(() =>
+        Toast.show({
+          type: "error",
+          text1: "Coś poszło nie tak :(",
+        })
+      );
   };
 
   useFocusEffect(
@@ -93,19 +109,18 @@ const Home: React.FC = () => {
         <View>
           <Card title="Ostatnie zakończone">
             {doneItems &&
-              doneItems
-                .slice(-5)
-                .map((record) => (
-                  <Text
-                    className={`text-2xl ${
-                      record.type === "debt" ? "text-danger" : "text-success"
-                    } font-semibold`}
-                  >
-                    {record.type === "debt"
-                      ? `-${record.value} ${record.currency}`
-                      : `+${record.value} ${record.currency}`}
-                  </Text>
-                ))}
+              doneItems.slice(-5).map((record) => (
+                <Text
+                  key={record.id}
+                  className={`text-2xl ${
+                    record.type === "debt" ? "text-danger" : "text-success"
+                  } font-semibold`}
+                >
+                  {record.type === "debt"
+                    ? `-${record.value} ${record.currency}`
+                    : `+${record.value} ${record.currency}`}
+                </Text>
+              ))}
           </Card>
         </View>
         <View className="flex-row justify-between">

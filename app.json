@@ -29,6 +29,11 @@
         "backgroundColor": "#B0B8DB"
       },
       "package": "com.gkushi.kalia"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "453e218b-ebe9-4b5c-a5de-798b8ceac960"
+      }
     }
   }
 }

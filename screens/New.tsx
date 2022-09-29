@@ -3,6 +3,7 @@ import { TouchableOpacity, View, ScrollView, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DateData } from "react-native-calendars";
 import { useFocusEffect } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 import TabContent from "@/components/TabContent";
 import FormInput from "@/components/FormInput";
 import { useModal } from "@/components/modal/useModal";
@@ -10,6 +11,7 @@ import Calendar from "@/components/Calendar";
 import Modal from "@/components/modal/Modal";
 import { addItem } from "@/utils/database";
 import { convertDateToString } from "@/utils/utils";
+import { Item } from "@/types/global.d";
 
 interface NewProps {
   setShowTabBar: Dispatch<SetStateAction<boolean>>;
@@ -58,21 +60,46 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
       start: startTime?.timestamp ? startTime.timestamp : null,
       end: endTime?.timestamp ? endTime.timestamp : null,
     };
+    const validation = Item.omit({ id: true }).safeParse(newItem);
+    if (validation.success === false) {
+      Toast.show({
+        type: "error",
+        text1: "Nieprawidłowe dane!",
+      });
+      return;
+    }
+
     if (activeTab === "first") {
       await addItem(newItem, "debt")
         .then(() => {
           resetValues();
-          console.log("success adding debt");
+          Toast.show({
+            type: "success",
+            text1: "Pomyślnie dodano!",
+          });
         })
-        .catch(() => console.log("success adding debt"));
+        .catch(() =>
+          Toast.show({
+            type: "error",
+            text1: "Coś poszło nie tak :(",
+          })
+        );
     }
     if (activeTab === "second") {
       await addItem(newItem, "due")
         .then(() => {
           resetValues();
-          console.log("success adding due");
+          Toast.show({
+            type: "success",
+            text1: "Pomyślnie dodano!",
+          });
         })
-        .catch(() => console.log("error adding due"));
+        .catch(() =>
+          Toast.show({
+            type: "error",
+            text1: "Coś poszło nie tak :(",
+          })
+        );
     }
   };
 

@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 import DebtCard from "@/components/DebtCard";
 import TabContent from "@/components/TabContent";
 import { getItems, deleteItem, setItemDone } from "@/utils/database";
@@ -22,7 +23,12 @@ const List: React.FC = () => {
         if (type === "due") setDues(r);
         console.log("sucess fetching data");
       })
-      .catch(() => console.log("error fetching data"));
+      .catch(() =>
+        Toast.show({
+          type: "error",
+          text1: "Coś poszło nie tak :(",
+        })
+      );
   };
 
   const deleteHandler = async (id: number, type: ItemType) => {
@@ -31,7 +37,12 @@ const List: React.FC = () => {
         console.log("success deleting item");
         fetchItems(type);
       })
-      .catch(() => console.log("error deleting item"));
+      .catch(() =>
+        Toast.show({
+          type: "error",
+          text1: "Coś poszło nie tak :(",
+        })
+      );
   };
 
   const setItemDoneHandler = async (
@@ -44,7 +55,12 @@ const List: React.FC = () => {
         fetchItems(item.type);
         console.log("success setting item done");
       })
-      .catch(() => console.log("error setting item done"));
+      .catch(() =>
+        Toast.show({
+          type: "error",
+          text1: "Coś poszło nie tak :(",
+        })
+      );
   };
 
   useFocusEffect(
@@ -71,8 +87,8 @@ const List: React.FC = () => {
             debts.map((record) => (
               <View key={record.id}>
                 <DebtCard
-                  title={record.person}
-                  name={record.description}
+                  title={record.description}
+                  name={record.person}
                   value={`${record.value} ${record.currency}`}
                   startDate={record.start}
                   endDate={record.end}
@@ -108,8 +124,8 @@ const List: React.FC = () => {
             dues.map((record) => (
               <View key={record.id}>
                 <DebtCard
-                  title={record.person}
-                  name={record.description}
+                  title={record.description}
+                  name={record.person}
                   value={`${record.value} ${record.currency}`}
                   startDate={record.start}
                   endDate={record.end}

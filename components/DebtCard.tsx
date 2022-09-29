@@ -109,7 +109,7 @@ const DebtCard: React.FC<DebtCardProps> = ({
                 {`${type === "debt" ? "-" : "+"}${value}`}
               </Text>
             </View>
-            <View className="h-full max-w-[60%] justify-center">
+            <View className="h-full max-w-[50%] justify-center">
               <Text className="text-2xl font-bold" numberOfLines={1}>
                 {title}
               </Text>

@@ -1,12 +1,12 @@
 import { z } from "zod";
 
-const DateObj = z.object({
+export const DateObj = z.object({
   day: z.number().int().min(1).max(31),
   month: z.number().int().min(1).max(12),
   year: z.number().int().min(1).max(3000),
-  timestamp: z.int(),
+  timestamp: z.number().int(),
 });
-const Item = z.object({
+export const Item = z.object({
   id: z.number().int(),
   person: z.string().min(1).max(64),
   description: z.string().min(1).max(64).nullable(),
@@ -15,7 +15,7 @@ const Item = z.object({
   start: z.number().int().nullable(),
   end: z.number().int().nullable(),
 });
-const DoneItem = z.object({
+export const DoneItem = z.object({
   id: z.number().int(),
   person: z.string().min(1).max(64),
   description: z.string().min(1).max(64).nullable(),
