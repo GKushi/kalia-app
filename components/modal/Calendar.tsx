@@ -51,15 +51,15 @@ LocaleConfig.locales["pol"] = {
     "Gru.",
   ],
   dayNames: [
+    "Niedziela",
     "Poniedziałek",
     "Wtorek",
     "Środa",
     "Czwartek",
     "Piątek",
     "Sobota",
-    "Niedziela",
   ],
-  dayNamesShort: ["Pon.", "Wt.", "Śr.", "Czw.", "Pt.", "Sob.", "Nie."],
+  dayNamesShort: ["Nie.", "Pon.", "Wt.", "Śr.", "Czw.", "Pt.", "Sob."],
   today: "Dzisiaj",
 };
 LocaleConfig.defaultLocale = "pol";
