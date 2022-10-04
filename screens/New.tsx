@@ -9,10 +9,12 @@ import TabContent from "@/components/TabContent";
 import FormInput from "@/components/FormInput";
 import { useModal } from "@/components/modal/useModal";
 import Calendar from "@/components/modal/Calendar";
+import CurrentCurrency from "@/components/modal/CurrentCurrency";
 import Modal from "@/components/modal/Modal";
 import { addItem } from "@/utils/database";
 import { convertDateToString } from "@/utils/utils";
 import { Item } from "@/types/global.d";
+import { getCurrency, currency as allCurrency } from "@/settings/currency";
 
 interface NewProps {
   setShowTabBar: Dispatch<SetStateAction<boolean>>;
@@ -20,12 +22,14 @@ interface NewProps {
 
 const New: React.FC<NewProps> = ({ setShowTabBar }) => {
   const [modal, setTitle, toggleIsShowing] = useModal(setShowTabBar);
+  const [modalContent, setModalContent] = useState<string>("");
 
   // form inputs
   const [activeTab, setActiveTab] = useState<ActiveTab>("first");
   const [person, setPerson] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [currency, setCurrency] = useState<string | null>(null);
   // calendar
   const [startTime, setStartTime] = useState<DateObj>();
   const [endTime, setEndTime] = useState<DateObj>();
@@ -46,6 +50,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
     setPerson("");
     setAmount("");
     setDescription("");
+    getCurrentCurrency();
   };
 
   const handleTabPress = (tab: ActiveTab): void => {
@@ -58,7 +63,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
       person: person,
       description: description ? description : null,
       value: amount,
-      currency: "PLN",
+      currency: currency ? currency : "$",
       start: startTime?.timestamp ? startTime.timestamp : null,
       end: endTime?.timestamp ? endTime.timestamp : null,
     };
@@ -149,10 +154,46 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
     }
   };
 
-  // open modal
-  const timePressHandler = (): void => {
-    setTitle(t("dateTitle"));
+  const toggleModal = (name: string) => {
+    switch (name) {
+      case "calendar":
+        setTitle(t("dateTitle"));
+        break;
+      case "currency":
+        setTitle(t("currentCurrencyTitle"));
+        break;
+    }
+    setModalContent(name);
     toggleIsShowing();
+  };
+
+  const modalChild = () => {
+    switch (modalContent) {
+      case "calendar":
+        return (
+          <Calendar
+            dayPressHandler={dayPressHandler}
+            startTime={startTime}
+            endTime={endTime}
+          />
+        );
+      case "currency":
+        return (
+          <CurrentCurrency currency={currency} setCurrency={setCurrency} />
+        );
+      default:
+        return null;
+    }
+  };
+
+  const getCurrentCurrency = async (): Promise<void> => {
+    await getCurrency().then((r) => {
+      if (r === null) {
+        setCurrency(allCurrency[0].norm);
+        return;
+      }
+      setCurrency(r.norm);
+    });
   };
 
   // set default options when screen is loaded
@@ -194,6 +235,8 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                     type="amount"
                     value={amount}
                     setValue={setAmount}
+                    onAmountPress={() => toggleModal("currency")}
+                    currency={currency}
                   />
                 </View>
                 <View>
@@ -217,7 +260,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                         ? convertDateToString(endTime?.timestamp)
                         : "__.__.____"
                     }`}
-                    onTextPress={timePressHandler}
+                    onTextPress={() => toggleModal("calendar")}
                   />
                 </View>
               </View>
@@ -237,6 +280,8 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                     type="amount"
                     value={amount}
                     setValue={setAmount}
+                    onAmountPress={() => toggleModal("currency")}
+                    currency={currency}
                   />
                 </View>
                 <View>
@@ -260,7 +305,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                         ? convertDateToString(endTime?.timestamp)
                         : "__.__.____"
                     }`}
-                    onTextPress={timePressHandler}
+                    onTextPress={() => toggleModal("calendar")}
                   />
                 </View>
               </View>
@@ -278,12 +323,8 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
           </ScrollView>
         </TabContent>
       </SafeAreaView>
-      <Modal modal={modal}>
-        <Calendar
-          dayPressHandler={dayPressHandler}
-          startTime={startTime}
-          endTime={endTime}
-        />
+      <Modal modal={modal} height={500}>
+        {modalChild()}
       </Modal>
     </>
   );
