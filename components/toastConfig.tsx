@@ -9,6 +9,7 @@ import { CheckCircleIcon, XCircleIcon } from "react-native-heroicons/solid";
 import { useTranslation } from "react-i18next";
 
 const toastConfig = {
+  // design success toast
   success: (props: ToastShowParams) => (
     <BaseToast
       {...props}
@@ -35,6 +36,7 @@ const toastConfig = {
       }}
     />
   ),
+  // design error toast
   error: (props: ToastShowParams) => {
     const { t } = useTranslation();
     return (

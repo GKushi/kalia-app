@@ -21,9 +21,9 @@ interface NewProps {
 }
 
 const New: React.FC<NewProps> = ({ setShowTabBar }) => {
+  // modal
   const [modal, setTitle, toggleIsShowing] = useModal(setShowTabBar);
   const [modalContent, setModalContent] = useState<string>("");
-
   // form inputs
   const [activeTab, setActiveTab] = useState<ActiveTab>("first");
   const [person, setPerson] = useState<string>("");
@@ -34,8 +34,10 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
   const [startTime, setStartTime] = useState<DateObj>();
   const [endTime, setEndTime] = useState<DateObj>();
   const [secondClick, setSecondClick] = useState<boolean>(true);
+
   const { t } = useTranslation();
 
+  // reset form values
   const resetValues = (): void => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -53,11 +55,13 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
     getCurrentCurrency();
   };
 
+  // change active tab
   const handleTabPress = (tab: ActiveTab): void => {
     setActiveTab(tab);
     resetValues();
   };
 
+  // add item to database
   const submitHandler = async () => {
     const newItem: Omit<Item, "id"> = {
       person: person,
@@ -67,6 +71,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
       start: startTime?.timestamp ? startTime.timestamp : null,
       end: endTime?.timestamp ? endTime.timestamp : null,
     };
+    // item validation
     const validation = Item.omit({ id: true }).safeParse(newItem);
     if (validation.success === false) {
       Toast.show({
@@ -154,6 +159,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
     }
   };
 
+  // open modal
   const toggleModal = (name: string) => {
     switch (name) {
       case "calendar":
@@ -167,6 +173,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
     toggleIsShowing();
   };
 
+  // render modal content
   const modalChild = () => {
     switch (modalContent) {
       case "calendar":
@@ -186,6 +193,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
     }
   };
 
+  // get default currency
   const getCurrentCurrency = async (): Promise<void> => {
     await getCurrency().then((r) => {
       if (r === null) {

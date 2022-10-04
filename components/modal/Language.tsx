@@ -20,6 +20,7 @@ const Language: React.FC<LanguageProps> = ({ toggleIsShowing }) => {
   const [value, setValue] = useState<string>(i18n.language);
   const { t } = useTranslation();
 
+  // change app language and close modal
   const langChange = (en: ItemType<string>) => {
     if (!en.value) return;
     i18n.changeLanguage(en.value);
@@ -27,6 +28,7 @@ const Language: React.FC<LanguageProps> = ({ toggleIsShowing }) => {
   };
 
   useEffect(() => {
+    // map supported langs into picker
     Object.entries(translations).map((lang) => {
       setItems((prevState) => [
         ...prevState,

@@ -1,5 +1,6 @@
 import { LocaleConfig } from "react-native-calendars";
 
+// app translations
 const translations = {
   pl: {
     translation: {
@@ -53,6 +54,7 @@ const translations = {
       defaultTheme: "Zgodny z ustawieniami telefonu",
       lightTheme: "Jasny",
       darkTheme: "Ciemny",
+      goodJob: "Gratulacje!",
     },
   },
   en: {
@@ -107,10 +109,12 @@ const translations = {
       defaultTheme: "Same as phone settings",
       lightTheme: "Light",
       darkTheme: "Dark",
+      goodJob: "Good job!",
     },
   },
 };
 
+// calendar translations
 LocaleConfig.locales["pl"] = {
   monthNames: [
     "Styczeń",

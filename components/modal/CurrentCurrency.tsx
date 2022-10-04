@@ -17,11 +17,12 @@ const CurrentCurrency: React.FC<CurrentCurrencyProps> = ({
   currency,
   setCurrency,
 }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [items, setItems] = useState<ItemType<string>[]>([]);
   const { t } = useTranslation();
 
   useEffect(() => {
+    // mapping all app currency to picker
     allCurrency.map((str) => {
       setItems((prevState) => [
         ...prevState,

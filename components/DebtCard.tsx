@@ -33,6 +33,7 @@ const DebtCard: React.FC<DebtCardProps> = ({
   rightSwipe,
 }) => {
   const { t } = useTranslation();
+  // left slide button
   const leftActions = () => {
     if (!leftSwipe) return null;
     return (
@@ -49,6 +50,7 @@ const DebtCard: React.FC<DebtCardProps> = ({
     );
   };
 
+  // right slide button
   const rightActions = () => {
     if (!rightSwipe) return null;
     return (
@@ -65,6 +67,7 @@ const DebtCard: React.FC<DebtCardProps> = ({
     );
   };
 
+  // highlighting card based on date
   const isUrgent = (): boolean => {
     if (!endDate) return false;
     const today = new Date();

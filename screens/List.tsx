@@ -14,10 +14,12 @@ const List: React.FC = () => {
   const [dues, setDues] = useState<Item[] | undefined>();
   const { t } = useTranslation();
 
+  // change active tab
   const handleTabPress = (tab: ActiveTab): void => {
     setActiveTab(tab);
   };
 
+  // fetch needed items from database
   const fetchItems = async (type: ItemType) => {
     await getItems(type)
       .then((r) => {
@@ -32,6 +34,7 @@ const List: React.FC = () => {
       );
   };
 
+  // delete item from database
   const deleteHandler = async (id: number, type: ItemType) => {
     await deleteItem(id, type)
       .then(() => {
@@ -45,6 +48,7 @@ const List: React.FC = () => {
       );
   };
 
+  // mark item as done item from database
   const setItemDoneHandler = async (
     item: Omit<DoneItem, "id">,
     itemId: number
@@ -54,6 +58,10 @@ const List: React.FC = () => {
         deleteHandler(itemId, item.type);
         fetchItems(item.type);
         console.log("success setting item done");
+        Toast.show({
+          type: "success",
+          text1: t("goodJob"),
+        });
       })
       .catch(() =>
         Toast.show({
@@ -62,6 +70,7 @@ const List: React.FC = () => {
       );
   };
 
+  // refetch items again on screen change
   useFocusEffect(
     useCallback(() => {
       if (activeTab === "first") fetchItems("debt");

@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Local from "expo-localization";
 import Toast from "react-native-toast-message";
 
+// list of available currency
 export const currency = [
   { iso: "USD", norm: "$" },
   { iso: "PLN", norm: "zł" },
@@ -33,6 +34,7 @@ export const setCurrency = async (currency: Currency): Promise<void> => {
   });
 };
 
+// init default currency based on localization
 export const initCurrency = async (): Promise<void> => {
   await getCurrency().then(async (r) => {
     if (r !== null) return;

@@ -16,6 +16,7 @@ const Currency: React.FC<CurrencyProps> = () => {
   const [value, setValue] = useState<string | null>(null);
   const { t } = useTranslation();
 
+  // fetchin default currency for initial picker value
   const getCurrentCurrency = async (): Promise<void> => {
     await getCurrency().then((r) => {
       if (r === null) {
@@ -26,13 +27,19 @@ const Currency: React.FC<CurrencyProps> = () => {
     });
   };
 
+  // changing the default currency
   const setCurrentCurrency = async (currency: ItemType<string>) => {
     if (!currency.value || !currency.label) return;
-    await setCurrency({ iso: currency.label, norm: currency.value });
+    const currencyObject: Currency = {
+      iso: currency.label,
+      norm: currency.value,
+    };
+    await setCurrency(currencyObject);
   };
 
   useEffect(() => {
     getCurrentCurrency();
+    // mapping all app currency to picker
     currency.map((str) => {
       setItems((prevState) => [
         ...prevState,

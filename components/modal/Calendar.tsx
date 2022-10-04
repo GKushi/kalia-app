@@ -6,6 +6,7 @@ import {
 } from "react-native-calendars";
 import i18n from "i18next";
 
+// init calendar translations
 import "@/settings/translations";
 
 interface CalendarProps {
@@ -92,6 +93,7 @@ const Calendar: React.FC<CalendarProps> = ({
   }, [startTime, endTime]);
 
   useEffect(() => {
+    // setting up calendar language
     LocaleConfig.defaultLocale = i18n.language;
   }, []);
 

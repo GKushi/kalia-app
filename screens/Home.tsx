@@ -14,6 +14,7 @@ const Home: React.FC = () => {
   const [doneItems, setDoneItems] = useState<DoneItem[] | undefined>();
   const { t } = useTranslation();
 
+  // fetch items from database
   const fetchItems = async () => {
     await getItems("debt")
       .then((r) => {
@@ -49,6 +50,7 @@ const Home: React.FC = () => {
       );
   };
 
+  // refetch items on screen change
   useFocusEffect(
     useCallback(() => {
       fetchItems();

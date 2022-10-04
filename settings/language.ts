@@ -5,11 +5,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import translations from "@/settings/translations";
 import Toast from "react-native-toast-message";
 
+// custom language detector
 const languageDetector: any = {
   type: "languageDetector",
   async: true,
   init: () => {},
   detect: async (callback: (lng: string) => void) => {
+    // detect language based on localization
     await AsyncStorage.getItem("i18n")
       .then((r) => {
         if (r !== null) {
@@ -35,6 +37,7 @@ const languageDetector: any = {
       );
   },
   cacheUserLanguage: async (lng: string) => {
+    // save user language
     await AsyncStorage.setItem("i18n", lng).catch(() =>
       Toast.show({
         type: "error",

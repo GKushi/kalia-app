@@ -19,10 +19,12 @@ interface SettingCard {
 }
 
 const Settings: React.FC<SettingsProps> = ({ setShowTabBar }) => {
+  // modal
   const [modal, setTitle, toggleIsShowing] = useModal(setShowTabBar);
   const [modalContent, setModalContent] = useState<string>("");
   const { t } = useTranslation();
 
+  // open modal
   const toggleModal = (name: string) => {
     switch (name) {
       case "theme":
@@ -42,6 +44,7 @@ const Settings: React.FC<SettingsProps> = ({ setShowTabBar }) => {
     toggleIsShowing();
   };
 
+  // render modal content
   const modalChild = () => {
     switch (modalContent) {
       case "theme":
@@ -57,6 +60,7 @@ const Settings: React.FC<SettingsProps> = ({ setShowTabBar }) => {
     }
   };
 
+  // labels for settings buttons
   const settingsCards: SettingCard[] = [
     { title: t("currencyLabel"), name: "currency" },
     { title: t("alertsLabel"), name: "alerts" },

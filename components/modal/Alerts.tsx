@@ -10,7 +10,7 @@ import {
 
 interface AlertsProps {}
 const Alerts: React.FC<AlertsProps> = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const { t } = useTranslation();
   const local_data = [
     {

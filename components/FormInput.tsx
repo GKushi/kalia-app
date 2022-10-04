@@ -34,6 +34,7 @@ const FormInput: React.FC<FormInputProps> = ({
   setValue,
   currency,
 }) => {
+  // render left side icon
   const icon = (type: string): JSX.Element | null => {
     const iconProps: iconProps = {
       color: "#B0B8DB",
