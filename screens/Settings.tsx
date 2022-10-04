@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 import SettingsCard from "@/components/SettingsCard";
 import { useModal } from "@/components/modal/useModal";
 import Theme from "@/components/modal/Theme";
@@ -20,20 +21,21 @@ interface SettingCard {
 const Settings: React.FC<SettingsProps> = ({ setShowTabBar }) => {
   const [modal, setTitle, toggleIsShowing] = useModal(setShowTabBar);
   const [modalContent, setModalContent] = useState<string>("");
+  const { t } = useTranslation();
 
   const toggleModal = (name: string) => {
     switch (name) {
       case "theme":
-        setTitle("Wybierz motyw");
+        setTitle(t("themeTitle"));
         break;
       case "currency":
-        setTitle("Wybierz domyślną walutę");
+        setTitle(t("currencyTitle"));
         break;
       case "language":
-        setTitle("Wybierz język");
+        setTitle(t("languageTitle"));
         break;
       case "alerts":
-        setTitle("Powiadomienia");
+        setTitle(t("alertsTitle"));
         break;
     }
     setModalContent(name);
@@ -47,7 +49,7 @@ const Settings: React.FC<SettingsProps> = ({ setShowTabBar }) => {
       case "currency":
         return <Currency />;
       case "language":
-        return <Language />;
+        return <Language toggleIsShowing={toggleIsShowing} />;
       case "alerts":
         return <Alerts />;
       default:
@@ -56,17 +58,17 @@ const Settings: React.FC<SettingsProps> = ({ setShowTabBar }) => {
   };
 
   const settingsCards: SettingCard[] = [
-    { title: "Domyślna waluta", name: "currency" },
-    { title: "Powiadomienia", name: "alerts" },
-    { title: "Motyw", name: "theme" },
-    { title: "Język", name: "language" },
+    { title: t("currencyLabel"), name: "currency" },
+    { title: t("alertsLabel"), name: "alerts" },
+    { title: t("themeLabel"), name: "theme" },
+    { title: t("languageLabel"), name: "language" },
   ];
 
   return (
     <>
       <SafeAreaView className="bg-blue h-full">
         <View className="items-center py-8">
-          <Text className="font-bold text-white text-2xl">Ustawienia</Text>
+          <Text className="font-bold text-white text-2xl">{t("settings")}</Text>
         </View>
         <ScrollView className="space-y-4 px-4">
           {settingsCards.map((card) => (
@@ -84,7 +86,9 @@ const Settings: React.FC<SettingsProps> = ({ setShowTabBar }) => {
           </View>
         </ScrollView>
       </SafeAreaView>
-      <Modal modal={modal}>{modalChild()}</Modal>
+      <Modal modal={modal} height={400}>
+        {modalChild()}
+      </Modal>
     </>
   );
 };

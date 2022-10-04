@@ -18,6 +18,7 @@ interface ModalProps {
     isShowing: boolean;
     toggleIsShowing: () => void;
   };
+  height?: number;
   children: ReactNode;
 }
 
@@ -25,7 +26,7 @@ type Context = {
   translateY: number;
 };
 
-const Modal: React.FC<ModalProps> = ({ modal, children }) => {
+const Modal: React.FC<ModalProps> = ({ modal, height, children }) => {
   // make slide in effect
   const initTranslateY = 200;
   const translateY = useSharedValue(initTranslateY);
@@ -42,6 +43,7 @@ const Modal: React.FC<ModalProps> = ({ modal, children }) => {
   const reanimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateY: translateY.value }],
+      height: height,
     };
   }, []);
 
@@ -81,7 +83,7 @@ const Modal: React.FC<ModalProps> = ({ modal, children }) => {
       />
 
       <Animated.View
-        className="h-4/6 bg-white z-10 rounded-t-3xl p-6 pt-0"
+        className="bg-white z-10 rounded-t-3xl p-6 pt-0"
         style={reanimatedStyle}
       >
         <PanGestureHandler onGestureEvent={panGestureEvent}>

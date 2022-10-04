@@ -3,6 +3,7 @@ import { View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
+import { useTranslation } from "react-i18next";
 import DebtCard from "@/components/DebtCard";
 import TabContent from "@/components/TabContent";
 import { getItems, deleteItem, setItemDone } from "@/utils/database";
@@ -11,6 +12,7 @@ const List: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>("first");
   const [debts, setDebts] = useState<Item[] | undefined>();
   const [dues, setDues] = useState<Item[] | undefined>();
+  const { t } = useTranslation();
 
   const handleTabPress = (tab: ActiveTab): void => {
     setActiveTab(tab);
@@ -26,7 +28,6 @@ const List: React.FC = () => {
       .catch(() =>
         Toast.show({
           type: "error",
-          text1: "Coś poszło nie tak :(",
         })
       );
   };
@@ -40,7 +41,6 @@ const List: React.FC = () => {
       .catch(() =>
         Toast.show({
           type: "error",
-          text1: "Coś poszło nie tak :(",
         })
       );
   };
@@ -58,7 +58,6 @@ const List: React.FC = () => {
       .catch(() =>
         Toast.show({
           type: "error",
-          text1: "Coś poszło nie tak :(",
         })
       );
   };
@@ -74,8 +73,8 @@ const List: React.FC = () => {
     <SafeAreaView className="bg-blue h-full">
       <View className="h-12" />
       <TabContent
-        firstTab="Długi"
-        secondTab="Należności"
+        firstTab={t("debts")}
+        secondTab={t("dues")}
         activeTab={activeTab}
         tabPress={handleTabPress}
       >
@@ -94,13 +93,13 @@ const List: React.FC = () => {
                   endDate={record.end}
                   type="debt"
                   leftSwipe={{
-                    title: "Usuń",
+                    title: t("delete"),
                     handler: () => {
                       deleteHandler(record.id, "debt");
                     },
                   }}
                   rightSwipe={{
-                    title: "Oddane",
+                    title: t("completeDebt"),
                     handler: () => {
                       setItemDoneHandler(
                         {
@@ -131,13 +130,13 @@ const List: React.FC = () => {
                   endDate={record.end}
                   type="due"
                   leftSwipe={{
-                    title: "Usuń",
+                    title: t("delete"),
                     handler: () => {
                       deleteHandler(record.id, "due");
                     },
                   }}
                   rightSwipe={{
-                    title: "Zebrane",
+                    title: t("completeDue"),
                     handler: () => {
                       setItemDoneHandler(
                         {

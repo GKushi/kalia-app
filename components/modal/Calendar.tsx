@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
   Calendar as CalendarComp,
-  LocaleConfig,
   DateData,
+  LocaleConfig,
 } from "react-native-calendars";
+import i18n from "i18next";
+
+import "@/settings/calendarTranslations";
 
 interface CalendarProps {
   dayPressHandler: (day: DateData) => void;
@@ -19,50 +22,6 @@ interface DayProps {
 interface IDayBetween {
   [key: string]: DayProps;
 }
-
-// Calendar translation
-LocaleConfig.locales["pol"] = {
-  monthNames: [
-    "Styczeń",
-    "Luty",
-    "Marzec",
-    "Kwiecień",
-    "Maj",
-    "Czerwiec",
-    "Lipiec",
-    "Sierpień",
-    "Wrzesień",
-    "Październik",
-    "Listopad",
-    "Grudzień",
-  ],
-  monthNamesShort: [
-    "Sty.",
-    "Lut.",
-    "Mrz.",
-    "Kwie.",
-    "Maj",
-    "Czerw",
-    "Lip.",
-    "Sier",
-    "Wrz.",
-    "Paź.",
-    "Lis.",
-    "Gru.",
-  ],
-  dayNames: [
-    "Niedziela",
-    "Poniedziałek",
-    "Wtorek",
-    "Środa",
-    "Czwartek",
-    "Piątek",
-    "Sobota",
-  ],
-  dayNamesShort: ["Nie.", "Pon.", "Wt.", "Śr.", "Czw.", "Pt.", "Sob."],
-  today: "Dzisiaj",
-};
-LocaleConfig.defaultLocale = "pol";
 
 const Calendar: React.FC<CalendarProps> = ({
   dayPressHandler,
@@ -132,6 +91,10 @@ const Calendar: React.FC<CalendarProps> = ({
     }
   }, [startTime, endTime]);
 
+  useEffect(() => {
+    LocaleConfig.defaultLocale = i18n.language;
+  }, []);
+
   return (
     <CalendarComp
       theme={{
@@ -142,6 +105,7 @@ const Calendar: React.FC<CalendarProps> = ({
         todayTextColor: "#CC1CCF",
         dayTextColor: "#2F3648",
       }}
+      className="h-[370px]"
       markingType="period"
       onDayPress={dayPressHandler}
       minDate="0001-01-01"

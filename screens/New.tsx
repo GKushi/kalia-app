@@ -4,10 +4,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { DateData } from "react-native-calendars";
 import { useFocusEffect } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
+import { useTranslation } from "react-i18next";
 import TabContent from "@/components/TabContent";
 import FormInput from "@/components/FormInput";
 import { useModal } from "@/components/modal/useModal";
-import Calendar from "@/components/Calendar";
+import Calendar from "@/components/modal/Calendar";
 import Modal from "@/components/modal/Modal";
 import { addItem } from "@/utils/database";
 import { convertDateToString } from "@/utils/utils";
@@ -29,6 +30,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
   const [startTime, setStartTime] = useState<DateObj>();
   const [endTime, setEndTime] = useState<DateObj>();
   const [secondClick, setSecondClick] = useState<boolean>(true);
+  const { t } = useTranslation();
 
   const resetValues = (): void => {
     const today = new Date();
@@ -64,7 +66,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
     if (validation.success === false) {
       Toast.show({
         type: "error",
-        text1: "Nieprawidłowe dane!",
+        text1: t("validationError"),
       });
       return;
     }
@@ -75,13 +77,12 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
           resetValues();
           Toast.show({
             type: "success",
-            text1: "Pomyślnie dodano!",
+            text1: t("successfullyAdded"),
           });
         })
         .catch(() =>
           Toast.show({
             type: "error",
-            text1: "Coś poszło nie tak :(",
           })
         );
     }
@@ -91,13 +92,12 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
           resetValues();
           Toast.show({
             type: "success",
-            text1: "Pomyślnie dodano!",
+            text1: t("successfullyAdded"),
           });
         })
         .catch(() =>
           Toast.show({
             type: "error",
-            text1: "Coś poszło nie tak :(",
           })
         );
     }
@@ -151,7 +151,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
 
   // open modal
   const timePressHandler = (): void => {
-    setTitle("Wybierz datę");
+    setTitle(t("dateTitle"));
     toggleIsShowing();
   };
 
@@ -166,11 +166,11 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
     <>
       <SafeAreaView className="bg-blue h-full">
         <View className="items-center py-8">
-          <Text className="font-bold text-white text-2xl">Dodaj nowy</Text>
+          <Text className="font-bold text-white text-2xl">{t("addNew")}</Text>
         </View>
         <TabContent
-          firstTab="Dług"
-          secondTab="Należność"
+          firstTab={t("debt")}
+          secondTab={t("due")}
           activeTab={activeTab}
           tabPress={handleTabPress}
         >
@@ -182,7 +182,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
               <View className="space-y-4">
                 <View>
                   <FormInput
-                    label="Komu?"
+                    label={t("debtPerson")}
                     type="person"
                     value={person}
                     setValue={setPerson}
@@ -190,7 +190,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                 </View>
                 <View>
                   <FormInput
-                    label="Ile?"
+                    label={t("debtAmount")}
                     type="amount"
                     value={amount}
                     setValue={setAmount}
@@ -198,7 +198,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                 </View>
                 <View>
                   <FormInput
-                    label="Za co?"
+                    label={t("debtDescription")}
                     type="description"
                     value={description}
                     setValue={setDescription}
@@ -206,7 +206,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                 </View>
                 <View>
                   <FormInput
-                    label="Od kiedy? Do kiedy?"
+                    label={t("debtTime")}
                     type="time"
                     value={`${
                       startTime
@@ -217,7 +217,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                         ? convertDateToString(endTime?.timestamp)
                         : "__.__.____"
                     }`}
-                    onPress={timePressHandler}
+                    onTextPress={timePressHandler}
                   />
                 </View>
               </View>
@@ -225,7 +225,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
               <View className="space-y-4">
                 <View>
                   <FormInput
-                    label="Kto?"
+                    label={t("duePerson")}
                     type="person"
                     value={person}
                     setValue={setPerson}
@@ -233,7 +233,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                 </View>
                 <View>
                   <FormInput
-                    label="Ile?"
+                    label={t("dueAmount")}
                     type="amount"
                     value={amount}
                     setValue={setAmount}
@@ -241,7 +241,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                 </View>
                 <View>
                   <FormInput
-                    label="Za co?"
+                    label={t("dueDescription")}
                     type="description"
                     value={description}
                     setValue={setDescription}
@@ -249,7 +249,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                 </View>
                 <View>
                   <FormInput
-                    label="Od kiedy? Do kiedy?"
+                    label={t("dueTime")}
                     type="time"
                     value={`${
                       startTime
@@ -260,7 +260,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                         ? convertDateToString(endTime?.timestamp)
                         : "__.__.____"
                     }`}
-                    onPress={timePressHandler}
+                    onTextPress={timePressHandler}
                   />
                 </View>
               </View>
@@ -268,11 +268,13 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
             <View className="flex-row justify-center">
               <TouchableOpacity onPress={submitHandler} activeOpacity={0.5}>
                 <View className="py-3 px-8 rounded-2xl bg-purple items-center justify-center">
-                  <Text className="text-2xl text-white font-bold">Dodaj</Text>
+                  <Text className="text-2xl text-white font-bold">
+                    {t("add")}
+                  </Text>
                 </View>
               </TouchableOpacity>
             </View>
-            <View className="h-[200px]" />
+            <View className="h-[250px]" />
           </ScrollView>
         </TabContent>
       </SafeAreaView>
