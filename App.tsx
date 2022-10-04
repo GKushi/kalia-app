@@ -6,6 +6,7 @@ import Toast from "react-native-toast-message";
 import toastConfig from "@/components/toastConfig";
 import Navigation from "@/components/Navigation";
 import { initTables } from "@/utils/database";
+import { initCurrency } from "@/settings/currency";
 
 import "@/settings/language";
 
@@ -20,8 +21,13 @@ const App: React.FC = () => {
       );
   };
 
+  const initDefaultCurrency = async () => {
+    await initCurrency();
+  };
+
   useEffect(() => {
     initDatabase();
+    initDefaultCurrency();
   }, []);
 
   return (

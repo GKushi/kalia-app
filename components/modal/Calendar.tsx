@@ -6,7 +6,7 @@ import {
 } from "react-native-calendars";
 import i18n from "i18next";
 
-import "@/settings/calendarTranslations";
+import "@/settings/translations";
 
 interface CalendarProps {
   dayPressHandler: (day: DateData) => void;

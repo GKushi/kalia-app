@@ -21,14 +21,18 @@ interface FormInputProps {
   value: string;
   setValue?: Dispatch<SetStateAction<string>>;
   onTextPress?: () => void;
+  onAmountPress?: () => void;
+  currency?: string | null;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
   label,
   type,
   onTextPress,
+  onAmountPress,
   value,
   setValue,
+  currency,
 }) => {
   const icon = (type: string): JSX.Element | null => {
     const iconProps: iconProps = {
@@ -68,9 +72,9 @@ const FormInput: React.FC<FormInputProps> = ({
           }}
         >
           <TextInput
-            className={`border-[1px] border-blue rounded-3xl text-xl h-14 px-14 ${
-              type === "amount" ? "pr-20" : ""
-            } text-black ${Platform.OS === "ios" && "pb-1"}`}
+            className={`border-[1px] border-blue rounded-3xl text-xl h-14 px-14 text-black ${
+              Platform.OS === "ios" && "pb-1"
+            }`}
             value={value}
             onChangeText={(text) => {
               setValue && setValue(text);
@@ -86,11 +90,13 @@ const FormInput: React.FC<FormInputProps> = ({
         <View className="absolute top-[16px] left-5">{icon(type)}</View>
         {type === "amount" && (
           <Pressable
-            className="absolute top-[15px] right-3 flex-row items-center"
-            onPress={() => console.log("click")}
+            className="absolute top-[15px] right-3 flex-row items-center gap-1"
+            onPress={() => {
+              onAmountPress && onAmountPress();
+            }}
           >
-            <Text className="text-black font-medium text-lg">PLN</Text>
-            <ChevronDownIcon color="#2F3648" />
+            <Text className="text-black font-medium text-lg">{currency}</Text>
+            <ChevronDownIcon color="#2F3648" size={20} />
           </Pressable>
         )}
       </View>

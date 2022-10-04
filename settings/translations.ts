@@ -1,3 +1,5 @@
+import { LocaleConfig } from "react-native-calendars";
+
 const translations = {
   pl: {
     translation: {
@@ -34,6 +36,7 @@ const translations = {
       dateTitle: "Wybierz datę",
       themeTitle: "Wybierz motyw",
       currencyTitle: "Wybierz domyślną walutę",
+      currentCurrencyTitle: "Wybierz walutę",
       languageTitle: "Wybierz język",
       alertsTitle: "Powiadomienia",
       themeLabel: "Motyw",
@@ -87,6 +90,7 @@ const translations = {
       dateTitle: "Choose date",
       themeTitle: "Select theme",
       currencyTitle: "Select default currency",
+      currentCurrencyTitle: "Select currency",
       languageTitle: "Select language",
       alertsTitle: "Alerts",
       themeLabel: "Theme",
@@ -106,4 +110,88 @@ const translations = {
     },
   },
 };
+
+LocaleConfig.locales["pl"] = {
+  monthNames: [
+    "Styczeń",
+    "Luty",
+    "Marzec",
+    "Kwiecień",
+    "Maj",
+    "Czerwiec",
+    "Lipiec",
+    "Sierpień",
+    "Wrzesień",
+    "Październik",
+    "Listopad",
+    "Grudzień",
+  ],
+  monthNamesShort: [
+    "Sty.",
+    "Lut.",
+    "Mrz.",
+    "Kwie.",
+    "Maj",
+    "Czerw.",
+    "Lip.",
+    "Sier.",
+    "Wrz.",
+    "Paź.",
+    "Lis.",
+    "Gru.",
+  ],
+  dayNames: [
+    "Niedziela",
+    "Poniedziałek",
+    "Wtorek",
+    "Środa",
+    "Czwartek",
+    "Piątek",
+    "Sobota",
+  ],
+  dayNamesShort: ["Nie.", "Pon.", "Wt.", "Śr.", "Czw.", "Pt.", "Sob."],
+  today: "Dzisiaj",
+};
+LocaleConfig.locales["en"] = {
+  monthNames: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ],
+  monthNamesShort: [
+    "Jan.",
+    "Feb.",
+    "Mar.",
+    "Apr.",
+    "May",
+    "Jun.",
+    "Jul.",
+    "Aug.",
+    "Sep.",
+    "Oct.",
+    "Nov.",
+    "Dec.",
+  ],
+  dayNames: [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ],
+  dayNamesShort: ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."],
+  today: "Today",
+};
+
 export default translations;

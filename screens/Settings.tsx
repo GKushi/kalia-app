@@ -84,6 +84,7 @@ const Settings: React.FC<SettingsProps> = ({ setShowTabBar }) => {
               Developed & designed by GKushi
             </Text>
           </View>
+          <View className="h-[150px]" />
         </ScrollView>
       </SafeAreaView>
       <Modal modal={modal} height={400}>

@@ -11,7 +11,7 @@ export const Item = z.object({
   person: z.string().min(1).max(64),
   description: z.string().min(1).max(64).nullable(),
   value: z.string().min(1).max(64),
-  currency: z.string().length(3),
+  currency: z.string().min(1).max(64),
   start: z.number().int().nullable(),
   end: z.number().int().nullable(),
 });
@@ -35,4 +35,8 @@ declare global {
   type Item = z.infer<typeof Item>;
   type ItemType = "debt" | "due";
   type DoneItem = z.infer<typeof DoneItem>;
+  interface Currency {
+    iso: string;
+    norm: string;
+  }
 }
