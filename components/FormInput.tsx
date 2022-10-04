@@ -12,6 +12,7 @@ import {
   CurrencyDollarIcon,
   ShoppingBagIcon,
   CalendarIcon,
+  ChevronDownIcon,
 } from "react-native-heroicons/outline";
 
 interface FormInputProps {
@@ -19,13 +20,13 @@ interface FormInputProps {
   type: string;
   value: string;
   setValue?: Dispatch<SetStateAction<string>>;
-  onPress?: () => void;
+  onTextPress?: () => void;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
   label,
   type,
-  onPress,
+  onTextPress,
   value,
   setValue,
 }) => {
@@ -63,13 +64,13 @@ const FormInput: React.FC<FormInputProps> = ({
       <View className="relative">
         <Pressable
           onPress={() => {
-            onPress && onPress();
+            onTextPress && onTextPress();
           }}
         >
           <TextInput
-            className={`border-[1px] border-blue rounded-3xl text-xl h-14 px-14 text-black ${
-              Platform.OS === "ios" && "pb-1"
-            }`}
+            className={`border-[1px] border-blue rounded-3xl text-xl h-14 px-14 ${
+              type === "amount" ? "pr-20" : ""
+            } text-black ${Platform.OS === "ios" && "pb-1"}`}
             value={value}
             onChangeText={(text) => {
               setValue && setValue(text);
@@ -78,15 +79,19 @@ const FormInput: React.FC<FormInputProps> = ({
             selectionColor="#2F3648"
             editable={type === "time" ? false : true}
             onTouchEnd={() => {
-              onPress && onPress();
+              onTextPress && onTextPress();
             }}
           />
         </Pressable>
         <View className="absolute top-[16px] left-5">{icon(type)}</View>
         {type === "amount" && (
-          <View className="absolute top-[15px] right-5">
+          <Pressable
+            className="absolute top-[15px] right-3 flex-row items-center"
+            onPress={() => console.log("click")}
+          >
             <Text className="text-black font-medium text-lg">PLN</Text>
-          </View>
+            <ChevronDownIcon color="#2F3648" />
+          </Pressable>
         )}
       </View>
     </View>

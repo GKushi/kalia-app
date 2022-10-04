@@ -3,6 +3,7 @@ import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Swipable from "react-native-gesture-handler/Swipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 import { convertDateToString } from "@/utils/utils";
 
 interface DebtCardProps {
@@ -31,6 +32,7 @@ const DebtCard: React.FC<DebtCardProps> = ({
   leftSwipe,
   rightSwipe,
 }) => {
+  const { t } = useTranslation();
   const leftActions = () => {
     if (!leftSwipe) return null;
     return (
@@ -117,10 +119,14 @@ const DebtCard: React.FC<DebtCardProps> = ({
                 {name}
               </Text>
               <Text className="text-[10px]" numberOfLines={1}>
-                Termin spłaty: {endDate ? convertDateToString(endDate) : "--"}
+                {`${t("paymentDate")} ${
+                  endDate ? convertDateToString(endDate) : "--"
+                }`}
               </Text>
               <Text className="text-[10px]" numberOfLines={1}>
-                Od: {startDate ? convertDateToString(startDate) : "--"}
+                {`${t("from")} ${
+                  startDate ? convertDateToString(startDate) : "--"
+                }`}
               </Text>
             </View>
           </View>

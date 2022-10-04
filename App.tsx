@@ -3,9 +3,11 @@ import { StatusBar } from "expo-status-bar";
 import { TailwindProvider } from "tailwindcss-react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
-import { toastConfig } from "@/components/toastConfig";
+import toastConfig from "@/components/toastConfig";
 import Navigation from "@/components/Navigation";
 import { initTables } from "@/utils/database";
+
+import "@/settings/language";
 
 const App: React.FC = () => {
   const initDatabase = async () => {
@@ -14,7 +16,6 @@ const App: React.FC = () => {
       .catch(() =>
         Toast.show({
           type: "error",
-          text1: "Coś poszło nie tak :(",
         })
       );
   };

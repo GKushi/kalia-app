@@ -1,58 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
+import DropDownPicker, { ItemType } from "react-native-dropdown-picker";
+import i18n from "i18next";
+import { useTranslation } from "react-i18next";
 import {
   style,
   containerStyle,
   dropDownContainerStyle,
 } from "@/components/modal/dropDownStyle";
+import translations from "@/settings/translations";
 
-const local_data = [
-  {
-    value: "1",
-    label: "POL",
-  },
-  {
-    value: "2",
-    label: "ENG",
-  },
-  {
-    value: "3",
-    label: "SPA",
-  },
-  {
-    value: "4",
-    label: "GER",
-  },
-  {
-    value: "5",
-    label: "NOR",
-  },
-  {
-    value: "6",
-    label: "UKR",
-  },
-  {
-    value: "7",
-    label: "ITA",
-  },
-  {
-    value: "8",
-    label: "SWE",
-  },
-];
+interface LanguageProps {
+  toggleIsShowing: () => void;
+}
 
-interface LanguageProps {}
-const Language: React.FC<LanguageProps> = () => {
-  const [open, setOpen] = useState(false);
-  const [items, setItems] = useState(local_data);
-  const [value, setValue] = useState(items[0].value);
+const Language: React.FC<LanguageProps> = ({ toggleIsShowing }) => {
+  const [open, setOpen] = useState<boolean>(false);
+  const [items, setItems] = useState<ItemType<string>[]>([]);
+  const [value, setValue] = useState<string>(i18n.language);
+  const { t } = useTranslation();
+
+  const langChange = (en: ItemType<string>) => {
+    if (!en.value) return;
+    i18n.changeLanguage(en.value);
+    toggleIsShowing();
+  };
+
+  useEffect(() => {
+    Object.entries(translations).map((lang) => {
+      setItems((prevState) => [
+        ...prevState,
+        {
+          value: lang[0],
+          label: lang[1].translation.languageName,
+        },
+      ]);
+    });
+    return () => {
+      setItems([]);
+    };
+  }, []);
 
   return (
     <View className="space-y-3">
       <View className="flex-row items-center">
-        <Text className="text-xl w-3/4">Język</Text>
-        <View className="w-1/4">
+        <Text className="text-xl w-1/2">{t("languageLabel")}</Text>
+        <View className="w-1/2">
           <DropDownPicker
             style={style}
             containerStyle={containerStyle}
@@ -63,6 +56,7 @@ const Language: React.FC<LanguageProps> = () => {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setItems}
+            onSelectItem={langChange}
           />
         </View>
       </View>

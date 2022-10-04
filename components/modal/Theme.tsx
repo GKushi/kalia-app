@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 import Checkbox from "expo-checkbox";
+import { useTranslation } from "react-i18next";
 
 interface ThemeProps {}
 interface CheckboxOption {
@@ -12,6 +13,7 @@ const Theme: React.FC<ThemeProps> = () => {
   const [isDefault, setIsDefault] = useState<boolean>(true);
   const [isLight, setIsLight] = useState<boolean>(false);
   const [isDark, setIsDark] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   const handleCheckboxClick = (name: string): void => {
     switch (name) {
@@ -35,12 +37,12 @@ const Theme: React.FC<ThemeProps> = () => {
 
   const checkboxOptions: CheckboxOption[] = [
     {
-      title: "Zgodny z ustawieniami telefonu",
+      title: t("defaultTheme"),
       value: isDefault,
       name: "default",
     },
-    { title: "Jasny", value: isLight, name: "light" },
-    { title: "Ciemny", value: isDark, name: "dark" },
+    { title: t("lightTheme"), value: isLight, name: "light" },
+    { title: t("darkTheme"), value: isDark, name: "dark" },
   ];
 
   return (

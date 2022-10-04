@@ -3,6 +3,7 @@ import { View, Text, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
+import { useTranslation } from "react-i18next";
 import Card from "@/components/Card";
 import { getDoneItems, getItems } from "@/utils/database";
 import { getClosestDate, countDoneSum } from "@/utils/utils";
@@ -11,6 +12,7 @@ const Home: React.FC = () => {
   const [debts, setDebts] = useState<Item[] | undefined>();
   const [dues, setDues] = useState<Item[] | undefined>();
   const [doneItems, setDoneItems] = useState<DoneItem[] | undefined>();
+  const { t } = useTranslation();
 
   const fetchItems = async () => {
     await getItems("debt")
@@ -21,7 +23,6 @@ const Home: React.FC = () => {
       .catch(() =>
         Toast.show({
           type: "error",
-          text1: "Coś poszło nie tak :(",
         })
       );
 
@@ -33,7 +34,6 @@ const Home: React.FC = () => {
       .catch(() =>
         Toast.show({
           type: "error",
-          text1: "Coś poszło nie tak :(",
         })
       );
 
@@ -45,7 +45,6 @@ const Home: React.FC = () => {
       .catch(() =>
         Toast.show({
           type: "error",
-          text1: "Coś poszło nie tak :(",
         })
       );
   };
@@ -64,7 +63,7 @@ const Home: React.FC = () => {
       >
         <View className="flex-row justify-between">
           <View className="w-[45%]">
-            <Card title="Do spłacenia">
+            <Card title={t("toPay")}>
               {debts &&
                 debts.map((record) => (
                   <Text
@@ -78,7 +77,7 @@ const Home: React.FC = () => {
             </Card>
           </View>
           <View className="w-[45%]">
-            <Card title="Do odebrania">
+            <Card title={t("toCollect")}>
               {dues &&
                 dues.map((record) => (
                   <Text
@@ -93,21 +92,21 @@ const Home: React.FC = () => {
           </View>
         </View>
         <View>
-          <Card title="Termin najbliszej spłaty">
+          <Card title={t("nextPayment")}>
             <Text className="text-2xl text-black font-semibold">
               {debts && getClosestDate(debts)}
             </Text>
           </Card>
         </View>
         <View>
-          <Card title="Termin najbliższego odbioru">
+          <Card title={t("nextCollection")}>
             <Text className="text-2xl text-black font-semibold">
               {dues && getClosestDate(dues)}
             </Text>
           </Card>
         </View>
         <View>
-          <Card title="Ostatnie zakończone">
+          <Card title={t("recentlyCompleted")}>
             {doneItems &&
               doneItems.slice(-5).map((record) => (
                 <Text
@@ -125,14 +124,14 @@ const Home: React.FC = () => {
         </View>
         <View className="flex-row justify-between">
           <View className="w-[45%]">
-            <Card title="Ilość spłaconych długów">
+            <Card title={t("payedDebts")}>
               <Text className="text-2xl text-black font-semibold">
                 {doneItems && countDoneSum("debt", doneItems)}
               </Text>
             </Card>
           </View>
           <View className="w-[45%]">
-            <Card title="Ilość odebranych należności">
+            <Card title={t("collectedDues")}>
               <Text className="text-2xl text-black font-semibold">
                 {doneItems && countDoneSum("due", doneItems)}
               </Text>

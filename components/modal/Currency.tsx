@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import { useTranslation } from "react-i18next";
 import {
   style,
   containerStyle,
@@ -35,11 +36,12 @@ const Currency: React.FC<CurrencyProps> = () => {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState(local_data);
   const [value, setValue] = useState(items[0].value);
+  const { t } = useTranslation();
 
   return (
     <View className="space-y-3">
       <View className="flex-row items-center">
-        <Text className="text-xl w-3/4">Waluta</Text>
+        <Text className="text-xl w-3/4">{t("currency")}</Text>
         <View className="w-1/4">
           <DropDownPicker
             style={style}

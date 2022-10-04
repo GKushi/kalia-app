@@ -11,7 +11,8 @@
           "@/components/*": ["./components/*"],
           "@/utils/*": ["./utils/*"],
           "@/screens/*": ["./screens/*"],
-          "@/types/*": ["./types/*"]
+          "@/types/*": ["./types/*"],
+          "@/settings/*": ["./settings/*"]
       },
   }
 }
