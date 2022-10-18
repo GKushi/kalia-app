@@ -24,7 +24,6 @@ export const DoneItem = z.object({
   type: z.enum(["debt", "due"]),
 });
 
-export {};
 declare global {
   type ActiveTab = "first" | "second";
   interface iconProps {
@@ -38,5 +37,10 @@ declare global {
   interface Currency {
     iso: string;
     norm: string;
+  }
+  interface Alert {
+    type: string;
+    text: string;
+    ms: number;
   }
 }
