@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import * as Notifications from "expo-notifications";
 import { StatusBar } from "expo-status-bar";
 import { TailwindProvider } from "tailwindcss-react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -7,11 +8,22 @@ import toastConfig from "@/components/toastConfig";
 import Navigation from "@/components/Navigation";
 import { initTables } from "@/utils/database";
 import { initCurrency } from "@/settings/currency";
+import { initAlert } from "@/settings/alerts";
 
 import "@/settings/language";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    };
+  },
+});
+
 const App: React.FC = () => {
-  const initDatabase = async () => {
+  const initDefaults = async () => {
     await initTables()
       .then(() => console.log("success creating database"))
       .catch(() =>
@@ -19,15 +31,12 @@ const App: React.FC = () => {
           type: "error",
         })
       );
-  };
-
-  const initDefaultCurrency = async () => {
     await initCurrency();
+    await initAlert();
   };
 
   useEffect(() => {
-    initDatabase();
-    initDefaultCurrency();
+    initDefaults();
   }, []);
 
   return (

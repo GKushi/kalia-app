@@ -55,6 +55,8 @@ const translations = {
       lightTheme: "Jasny",
       darkTheme: "Ciemny",
       goodJob: "Gratulacje!",
+      debtNotification: "Zbliża się termin spłaty twojego długu!",
+      dueNotification: "Zbliża się termin spłaty twojej należności!",
     },
   },
   en: {
@@ -110,6 +112,8 @@ const translations = {
       lightTheme: "Light",
       darkTheme: "Dark",
       goodJob: "Good job!",
+      debtNotification: "Your debt payment date is about to end!",
+      dueNotification: "Your due payment date is about to end!",
     },
   },
 };

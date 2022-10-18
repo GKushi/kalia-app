@@ -15,6 +15,7 @@ import { addItem } from "@/utils/database";
 import { convertDateToString } from "@/utils/utils";
 import { Item } from "@/types/global.d";
 import { getCurrency, currency as allCurrency } from "@/settings/currency";
+import { scheduleNotifications } from "@/settings/alerts";
 
 interface NewProps {
   setShowTabBar: Dispatch<SetStateAction<boolean>>;
@@ -89,6 +90,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
             type: "success",
             text1: t("successfullyAdded"),
           });
+          if (newItem.end) scheduleNotifications(newItem.end, "debt");
         })
         .catch(() =>
           Toast.show({
@@ -104,6 +106,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
             type: "success",
             text1: t("successfullyAdded"),
           });
+          if (newItem.end) scheduleNotifications(newItem.end, "due");
         })
         .catch(() =>
           Toast.show({

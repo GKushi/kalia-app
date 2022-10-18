@@ -1,37 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
+import DropDownPicker, { ItemType } from "react-native-dropdown-picker";
 import { useTranslation } from "react-i18next";
 import {
   style,
   containerStyle,
   dropDownContainerStyle,
 } from "@/components/modal/dropDownStyle";
+import { getAlert, alerts, setAlert } from "@/settings/alerts";
 
 interface AlertsProps {}
 const Alerts: React.FC<AlertsProps> = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const [items, setItems] = useState<ItemType<string>[]>([]);
+  const [value, setValue] = useState<string | null>(null);
   const { t } = useTranslation();
-  const local_data = [
-    {
-      value: "1",
-      label: t("oneDay"),
-    },
-    {
-      value: "2",
-      label: t("twoDays"),
-    },
-    {
-      value: "3",
-      label: t("threeDays"),
-    },
-    {
-      value: "4",
-      label: t("week"),
-    },
-  ];
-  const [items, setItems] = useState(local_data);
-  const [value, setValue] = useState(items[0].value);
+
+  // fetchin default alerts for initial picker value
+  const getCurrentAlert = async (): Promise<void> => {
+    await getAlert().then((r) => {
+      if (r === null) {
+        setValue(alerts[0].type);
+        return;
+      }
+      setValue(r.type);
+    });
+  };
+
+  // changing the default alert
+  const setCurrentAlert = async (alert: ItemType<string>) => {
+    if (!alert.value) return;
+    // find selected value in alert by value
+    const alertObj: Alert =
+      alerts.find((item) => item.type === alert.value) || alerts[0];
+    await setAlert(alertObj);
+  };
+
+  useEffect(() => {
+    getCurrentAlert();
+    // mapping all app alerts to picker
+    alerts.map((option) => {
+      setItems((prevState) => [
+        ...prevState,
+        {
+          value: option.type,
+          label: t(option.text),
+        },
+      ]);
+    });
+
+    return () => {
+      setItems([]);
+    };
+  }, []);
 
   return (
     <View className="space-y-3">
@@ -48,6 +69,7 @@ const Alerts: React.FC<AlertsProps> = () => {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setItems}
+            onSelectItem={setCurrentAlert}
           />
         </View>
       </View>
