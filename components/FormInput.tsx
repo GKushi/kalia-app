@@ -23,6 +23,7 @@ interface FormInputProps {
   onTextPress?: () => void;
   onAmountPress?: () => void;
   currency?: string | null;
+  error?: boolean;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -33,6 +34,7 @@ const FormInput: React.FC<FormInputProps> = ({
   value,
   setValue,
   currency,
+  error,
 }) => {
   // render left side icon
   const icon = (type: string): JSX.Element | null => {
@@ -65,7 +67,13 @@ const FormInput: React.FC<FormInputProps> = ({
 
   return (
     <View className="space-y-1">
-      <Text className="font-medium text-sm text-black ml-5">{label}</Text>
+      <Text
+        className={`font-medium text-sm ${
+          error ? "text-danger" : "text-black"
+        } ml-5`}
+      >
+        {label}
+      </Text>
       <View className="relative">
         <Pressable
           onPress={() => {
@@ -73,7 +81,9 @@ const FormInput: React.FC<FormInputProps> = ({
           }}
         >
           <TextInput
-            className={`border-[1px] border-blue rounded-3xl text-xl h-14 px-14 text-black ${
+            className={`border-[1px] ${
+              error ? "border-danger" : "border-blue"
+            } rounded-3xl text-xl h-14 px-14 text-black ${
               Platform.OS === "ios" && "pb-1"
             }`}
             value={value}
