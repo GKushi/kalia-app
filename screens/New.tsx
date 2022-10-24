@@ -35,6 +35,8 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
   const [startTime, setStartTime] = useState<DateObj>();
   const [endTime, setEndTime] = useState<DateObj>();
   const [secondClick, setSecondClick] = useState<boolean>(true);
+  // validation
+  const [error, setError] = useState<(string | number)[]>([]);
 
   const { t } = useTranslation();
 
@@ -73,8 +75,13 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
       end: endTime?.timestamp ? endTime.timestamp : null,
     };
     // item validation
+    setError([]);
     const validation = Item.omit({ id: true }).safeParse(newItem);
     if (validation.success === false) {
+      validation.error.errors.map((e) => {
+        setError((prev) => prev.concat(e.path));
+      });
+
       Toast.show({
         type: "error",
         text1: t("validationError"),
@@ -238,6 +245,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                     type="person"
                     value={person}
                     setValue={setPerson}
+                    error={error.find((obj) => obj === "person") ? true : false}
                   />
                 </View>
                 <View>
@@ -248,6 +256,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                     setValue={setAmount}
                     onAmountPress={() => toggleModal("currency")}
                     currency={currency}
+                    error={error.find((obj) => obj === "value") ? true : false}
                   />
                 </View>
                 <View>
@@ -283,6 +292,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                     type="person"
                     value={person}
                     setValue={setPerson}
+                    error={error.find((obj) => obj === "person") ? true : false}
                   />
                 </View>
                 <View>
@@ -293,6 +303,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                     setValue={setAmount}
                     onAmountPress={() => toggleModal("currency")}
                     currency={currency}
+                    error={error.find((obj) => obj === "value") ? true : false}
                   />
                 </View>
                 <View>
