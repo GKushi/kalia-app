@@ -26,10 +26,6 @@
     "android": {
       "userInterfaceStyle": "automatic",
       "softwareKeyboardLayoutMode": "pan",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#B0B8DB"
-      },
       "package": "com.gkushi.kalia"
     },
     "extra": {
