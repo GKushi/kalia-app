@@ -1,60 +1,48 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Text, View } from "react-native";
 import Checkbox from "expo-checkbox";
 import { useTranslation } from "react-i18next";
+import { ThemeContext } from "@/settings/ThemeContext";
 
-interface ThemeProps {}
 interface CheckboxOption {
-  title: string;
   value: boolean;
-  name: string;
+  name: Theme;
 }
-const Theme: React.FC<ThemeProps> = () => {
-  const [isDefault, setIsDefault] = useState<boolean>(true);
-  const [isLight, setIsLight] = useState<boolean>(false);
-  const [isDark, setIsDark] = useState<boolean>(false);
+const Theme: React.FC = () => {
   const { t } = useTranslation();
-
-  const handleCheckboxClick = (name: string): void => {
-    switch (name) {
-      case "default":
-        setIsDefault(true);
-        setIsLight(false);
-        setIsDark(false);
-        break;
-      case "dark":
-        setIsDark(true);
-        setIsDefault(false);
-        setIsLight(false);
-        break;
-      case "light":
-        setIsLight(true);
-        setIsDefault(false);
-        setIsDark(false);
-        break;
-    }
-  };
+  const context = useContext(ThemeContext);
 
   const checkboxOptions: CheckboxOption[] = [
     {
-      title: t("defaultTheme"),
-      value: isDefault,
+      value: context?.themeState === "default",
       name: "default",
     },
-    { title: t("lightTheme"), value: isLight, name: "light" },
-    { title: t("darkTheme"), value: isDark, name: "dark" },
+    {
+      value: context?.themeState === "light",
+      name: "light",
+    },
+    {
+      value: context?.themeState === "dark",
+      name: "dark",
+    },
   ];
 
   return (
     <View className="space-y-3">
       {checkboxOptions.map((option) => (
-        <View className="flex-row gap-4 items-center" key={option.title}>
-          <Text className="text-xl w-3/4">{option.title}</Text>
+        <View className="flex-row gap-4 items-center" key={option.name}>
+          <Text
+            className={`${
+              context?.isDark ? "text-white" : "text-black"
+            } text-xl w-3/4`}
+          >
+            {t(option.name)}
+          </Text>
           <Checkbox
             className={`rounded-full w-8 h-8 border-4 mr-6`}
             color="#CC1CCF"
             value={option.value}
-            onValueChange={() => handleCheckboxClick(option.name)}
+            onValueChange={() => context?.changeTheme(option.name)}
           />
         </View>
       ))}

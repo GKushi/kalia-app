@@ -9,6 +9,7 @@ import Navigation from "@/components/Navigation";
 import { initTables } from "@/utils/database";
 import { initCurrency } from "@/settings/currency";
 import { initAlert } from "@/settings/alerts";
+import { ThemeProvider } from "@/settings/ThemeContext";
 
 import "@/settings/language";
 
@@ -41,11 +42,13 @@ const App: React.FC = () => {
 
   return (
     <TailwindProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <Navigation />
-        <Toast visibilityTime={1500} config={toastConfig} />
-      </GestureHandlerRootView>
-      <StatusBar style="light" />
+      <ThemeProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Navigation />
+          <Toast visibilityTime={1500} config={toastConfig} />
+        </GestureHandlerRootView>
+        <StatusBar style="light" />
+      </ThemeProvider>
     </TailwindProvider>
   );
 };

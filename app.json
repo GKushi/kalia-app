@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
@@ -19,10 +19,12 @@
       "**/*"
     ],
     "ios": {
+      "userInterfaceStyle": "automatic",
       "supportsTablet": false,
       "bundleIdentifier": "com.gkushi.kalia"
     },
     "android": {
+      "userInterfaceStyle": "automatic",
       "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

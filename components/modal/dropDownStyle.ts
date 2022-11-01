@@ -1,7 +1,11 @@
 // styling for dropdown picker component
-export const style = {
+export const lightStyle = {
   borderWidth: 0,
   backgroundColor: "#FCFCFC",
+};
+export const darkStyle = {
+  borderWidth: 0,
+  backgroundColor: "#80838A",
 };
 export const containerStyle = {
   elevation: 5,
@@ -10,8 +14,21 @@ export const containerStyle = {
   shadowOpacity: 0.2,
   shadowRadius: 10,
 };
-export const dropDownContainerStyle = {
+export const lightDropDownContainerStyle = {
   borderWidth: 0,
   borderTopWidth: 1,
   backgroundColor: "#FCFCFC",
+  borderColor: "#000000",
+};
+export const darkDropDownContainerStyle = {
+  borderWidth: 0,
+  borderTopWidth: 1,
+  backgroundColor: "#80838A",
+  borderColor: "#FCFCFC",
+};
+export const lightText = {
+  color: "#FCFCFC",
+};
+export const darkText = {
+  color: "#2F3648",
 };

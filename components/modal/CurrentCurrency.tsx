@@ -1,13 +1,24 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { Text, View } from "react-native";
 import DropDownPicker, { ItemType } from "react-native-dropdown-picker";
 import { useTranslation } from "react-i18next";
 import {
-  style,
+  lightStyle,
+  darkStyle,
   containerStyle,
-  dropDownContainerStyle,
+  lightDropDownContainerStyle,
+  darkDropDownContainerStyle,
+  lightText,
+  darkText,
 } from "@/components/modal/dropDownStyle";
 import { currency as allCurrency } from "@/settings/currency";
+import { ThemeContext } from "@/settings/ThemeContext";
 
 interface CurrentCurrencyProps {
   currency: string | null;
@@ -20,6 +31,7 @@ const CurrentCurrency: React.FC<CurrentCurrencyProps> = ({
   const [open, setOpen] = useState<boolean>(false);
   const [items, setItems] = useState<ItemType<string>[]>([]);
   const { t } = useTranslation();
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
 
   useEffect(() => {
     // mapping all app currency to picker
@@ -41,12 +53,21 @@ const CurrentCurrency: React.FC<CurrentCurrencyProps> = ({
   return (
     <View className="space-y-3">
       <View className="flex-row items-center">
-        <Text className="text-xl w-3/4">{t("currency")}</Text>
+        <Text
+          className={`${isDark ? "text-white" : "text-black"} text-xl w-3/4`}
+        >
+          {t("currency")}
+        </Text>
         <View className="w-1/4">
           <DropDownPicker
-            style={style}
+            style={isDark ? darkStyle : lightStyle}
             containerStyle={containerStyle}
-            dropDownContainerStyle={dropDownContainerStyle}
+            dropDownContainerStyle={
+              isDark ? darkDropDownContainerStyle : lightDropDownContainerStyle
+            }
+            textStyle={isDark ? lightText : darkText}
+            listItemLabelStyle={isDark ? lightText : darkText}
+            theme={isDark ? "DARK" : "LIGHT"}
             open={open}
             value={currency}
             items={items}

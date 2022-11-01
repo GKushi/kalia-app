@@ -1,4 +1,4 @@
-import React, { useEffect, ReactNode } from "react";
+import React, { useEffect, ReactNode, useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import Animated, {
   useSharedValue,
@@ -11,6 +11,7 @@ import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
 } from "react-native-gesture-handler";
+import { ThemeContext } from "@/settings/ThemeContext";
 
 interface ModalProps {
   modal: {
@@ -27,6 +28,7 @@ type Context = {
 };
 
 const Modal: React.FC<ModalProps> = ({ modal, height, children }) => {
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
   // make slide in effect
   const initTranslateY = 200;
   const translateY = useSharedValue(initTranslateY);
@@ -83,17 +85,27 @@ const Modal: React.FC<ModalProps> = ({ modal, height, children }) => {
       />
 
       <Animated.View
-        className="bg-white z-10 rounded-t-3xl p-6 pt-0"
+        className={`${
+          isDark ? "bg-gray" : "bg-white"
+        } z-10 rounded-t-3xl p-6 pt-0`}
         style={reanimatedStyle}
       >
         <PanGestureHandler onGestureEvent={panGestureEvent}>
           <Animated.View className="w-full h-10 justify-center items-center">
-            <View className="bg-black opacity-60 w-1/4 h-[3px] rounded-full" />
+            <View
+              className={`${
+                isDark ? "bg-white" : "bg-black"
+              } opacity-60 w-1/4 h-[3px] rounded-full`}
+            />
           </Animated.View>
         </PanGestureHandler>
         <View className="space-y-4">
           <View>
-            <Text className="text-center text-2xl font-bold text-black">
+            <Text
+              className={`${
+                isDark ? "text-white" : "text-black"
+              } text-center text-2xl font-bold`}
+            >
               {modal.title}
             </Text>
           </View>

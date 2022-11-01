@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import DropDownPicker, { ItemType } from "react-native-dropdown-picker";
 import i18n from "i18next";
 import { useTranslation } from "react-i18next";
 import {
-  style,
+  lightStyle,
+  darkStyle,
   containerStyle,
-  dropDownContainerStyle,
+  lightDropDownContainerStyle,
+  darkDropDownContainerStyle,
+  lightText,
+  darkText,
 } from "@/components/modal/dropDownStyle";
 import translations from "@/settings/translations";
+import { ThemeContext } from "@/settings/ThemeContext";
 
 interface LanguageProps {
   toggleIsShowing: () => void;
@@ -19,6 +24,7 @@ const Language: React.FC<LanguageProps> = ({ toggleIsShowing }) => {
   const [items, setItems] = useState<ItemType<string>[]>([]);
   const [value, setValue] = useState<string>(i18n.language);
   const { t } = useTranslation();
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
 
   // change app language and close modal
   const langChange = (en: ItemType<string>) => {
@@ -46,12 +52,21 @@ const Language: React.FC<LanguageProps> = ({ toggleIsShowing }) => {
   return (
     <View className="space-y-3">
       <View className="flex-row items-center">
-        <Text className="text-xl w-1/2">{t("languageLabel")}</Text>
+        <Text
+          className={`${isDark ? "text-white" : "text-black"} text-xl w-1/2`}
+        >
+          {t("languageLabel")}
+        </Text>
         <View className="w-1/2">
           <DropDownPicker
-            style={style}
+            style={isDark ? darkStyle : lightStyle}
             containerStyle={containerStyle}
-            dropDownContainerStyle={dropDownContainerStyle}
+            dropDownContainerStyle={
+              isDark ? darkDropDownContainerStyle : lightDropDownContainerStyle
+            }
+            textStyle={isDark ? lightText : darkText}
+            listItemLabelStyle={isDark ? lightText : darkText}
+            theme={isDark ? "DARK" : "LIGHT"}
             open={open}
             value={value}
             items={items}

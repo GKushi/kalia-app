@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
@@ -7,12 +7,14 @@ import { useTranslation } from "react-i18next";
 import Card from "@/components/Card";
 import { getDoneItems, getItems } from "@/utils/database";
 import { getClosestDate, countDoneSum } from "@/utils/utils";
+import { ThemeContext } from "@/settings/ThemeContext";
 
 const Home: React.FC = () => {
   const [debts, setDebts] = useState<Item[] | undefined>();
   const [dues, setDues] = useState<Item[] | undefined>();
   const [doneItems, setDoneItems] = useState<DoneItem[] | undefined>();
   const { t } = useTranslation();
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
 
   // fetch items from database
   const fetchItems = async () => {
@@ -58,9 +60,11 @@ const Home: React.FC = () => {
   );
 
   return (
-    <SafeAreaView className="bg-blue">
+    <SafeAreaView className={`${isDark ? "bg-black" : "bg-blue"}`}>
       <ScrollView
-        className="bg-blue h-full p-[5%] space-y-[5%]"
+        className={`${
+          isDark ? "bg-black" : "bg-blue"
+        } h-full p-[5%] space-y-[5%]`}
         showsVerticalScrollIndicator={false}
       >
         <View className="flex-row justify-between">
@@ -95,14 +99,22 @@ const Home: React.FC = () => {
         </View>
         <View>
           <Card title={t("nextPayment")}>
-            <Text className="text-2xl text-black font-semibold">
+            <Text
+              className={`${
+                isDark ? "text-white" : "text-black"
+              } text-2xl font-semibold`}
+            >
               {debts && getClosestDate(debts)}
             </Text>
           </Card>
         </View>
         <View>
           <Card title={t("nextCollection")}>
-            <Text className="text-2xl text-black font-semibold">
+            <Text
+              className={`${
+                isDark ? "text-white" : "text-black"
+              } text-2xl font-semibold`}
+            >
               {dues && getClosestDate(dues)}
             </Text>
           </Card>
@@ -127,14 +139,22 @@ const Home: React.FC = () => {
         <View className="flex-row justify-between">
           <View className="w-[45%]">
             <Card title={t("payedDebts")}>
-              <Text className="text-2xl text-black font-semibold">
+              <Text
+                className={`${
+                  isDark ? "text-white" : "text-black"
+                } text-2xl font-semibold`}
+              >
                 {doneItems && countDoneSum("debt", doneItems)}
               </Text>
             </Card>
           </View>
           <View className="w-[45%]">
             <Card title={t("collectedDues")}>
-              <Text className="text-2xl text-black font-semibold">
+              <Text
+                className={`${
+                  isDark ? "text-white" : "text-black"
+                } text-2xl font-semibold`}
+              >
                 {doneItems && countDoneSum("due", doneItems)}
               </Text>
             </Card>

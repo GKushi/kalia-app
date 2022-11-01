@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useContext } from "react";
 import { View, TouchableOpacity, AccessibilityRole } from "react-native";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import {
@@ -7,6 +7,7 @@ import {
   CogIcon,
   PlusIcon,
 } from "react-native-heroicons/outline";
+import { ThemeContext } from "@/settings/ThemeContext";
 
 interface TabBarItemProps {
   accessibilityRole: AccessibilityRole;
@@ -57,9 +58,12 @@ const TabBar: React.FC<BottomTabBarProps> = ({
   descriptors,
   navigation,
 }) => {
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
   return (
     <View
-      className="flex-row h-[100px] absolute left-0 bottom-0 right-0 bg-white rounded-t-3xl"
+      className={`${
+        isDark ? "bg-gray" : "bg-white"
+      } flex-row h-[100px] absolute left-0 bottom-0 right-0 rounded-t-3xl`}
       style={{
         elevation: 24,
         shadowOffset: { width: 0, height: -2 },
@@ -94,7 +98,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({
 
         const icon = (name: string): JSX.Element | null => {
           const iconProps: iconProps = {
-            color: isFocused ? "#CC1CCF" : "#B0B8DB",
+            color: isFocused ? "#CC1CCF" : isDark ? "#FCFCFC" : "#B0B8DB",
             size: "30",
           };
 

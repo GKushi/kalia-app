@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from "react";
-import {
-  Calendar as CalendarComp,
-  DateData,
-  LocaleConfig,
-} from "react-native-calendars";
-import i18n from "i18next";
+import React, { useState, useEffect, useContext } from "react";
+import { Calendar as CalendarComp, DateData } from "react-native-calendars";
+import { ThemeContext } from "@/settings/ThemeContext";
 
 // init calendar translations
 import "@/settings/translations";
@@ -30,6 +26,7 @@ const Calendar: React.FC<CalendarProps> = ({
   endTime,
 }) => {
   const [daysBetween, setDaysBetween] = useState<IDayBetween | undefined>();
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
 
   // date objects required by calendar component
   const startTimeObj: IDayBetween = {
@@ -38,7 +35,7 @@ const Calendar: React.FC<CalendarProps> = ({
       .padStart(2, "0")}-${startTime?.day.toString().padStart(2, "0")}`]: {
       startingDay: true,
       color: "#CC1CCF",
-      textColor: "white",
+      textColor: "#FCFCFC",
     },
   };
   const endTimeObj: IDayBetween = {
@@ -47,7 +44,7 @@ const Calendar: React.FC<CalendarProps> = ({
       .padStart(2, "0")}-${endTime?.day.toString().padStart(2, "0")}`]: {
       endingDay: true,
       color: "#CC1CCF",
-      textColor: "white",
+      textColor: "#FCFCFC",
     },
   };
 
@@ -66,7 +63,7 @@ const Calendar: React.FC<CalendarProps> = ({
               startingDay: true,
               endingDay: true,
               color: "#CC1CCF",
-              textColor: "white",
+              textColor: "#FCFCFC",
             },
         });
       } else {
@@ -81,7 +78,7 @@ const Calendar: React.FC<CalendarProps> = ({
           Object.assign(obj, {
             [dateString]: {
               color: "#B0B8DB",
-              textColor: "white",
+              textColor: "#FCFCFC",
             },
           });
         }
@@ -92,20 +89,16 @@ const Calendar: React.FC<CalendarProps> = ({
     }
   }, [startTime, endTime]);
 
-  useEffect(() => {
-    // setting up calendar language
-    LocaleConfig.defaultLocale = i18n.language;
-  }, []);
-
   return (
     <CalendarComp
       theme={{
         arrowColor: "#CC1CCF",
-        calendarBackground: "#FCFCFC",
+        calendarBackground: isDark ? "#80838A" : "#FCFCFC",
         textSectionTitleColor: "#B0B8DB",
         selectedDayTextColor: "#FFFFFF",
-        todayTextColor: "#CC1CCF",
-        dayTextColor: "#2F3648",
+        todayTextColor: "#FCFCFC",
+        dayTextColor: isDark ? "#FCFCFC" : "#2F3648",
+        monthTextColor: isDark ? "#FCFCFC" : "#2F3648",
       }}
       className="h-[370px]"
       markingType="period"

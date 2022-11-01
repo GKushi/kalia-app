@@ -1,5 +1,6 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useContext } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+import { ThemeContext } from "@/settings/ThemeContext";
 
 interface TabContentProps {
   firstTab: string;
@@ -15,14 +16,27 @@ interface Tab {
 }
 
 const Tab: React.FC<Tab> = ({ name, active, onPress }) => {
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.5}>
       <View
-        className={`py-1 px-5 rounded-t-3xl border-white border-[1.5px] ${
-          active ? "bg-white" : "bg-blue -mt-2 border-b-0"
+        className={`py-1 px-5 rounded-t-3xl ${
+          isDark ? "border-gray" : "border-white"
+        } border-[1.5px] ${
+          active
+            ? isDark
+              ? "bg-gray"
+              : "bg-white"
+            : isDark
+            ? "bg-black -mt-2 border-b-0"
+            : "bg-blue -mt-2 border-b-0"
         }`}
       >
-        <Text className={`text-2xl ${active ? "text-blue" : "text-white"}`}>
+        <Text
+          className={`text-2xl ${
+            active ? (isDark ? "text-white" : "text-blue") : "text-white"
+          }`}
+        >
           {name}
         </Text>
       </View>
@@ -37,9 +51,14 @@ const TabContent: React.FC<TabContentProps> = ({
   tabPress,
   children,
 }) => {
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
   return (
     <>
-      <View className="flex-row bg-blue justify-center gap-4">
+      <View
+        className={`${
+          isDark ? "bg-black" : "bg-blue"
+        } flex-row justify-center gap-4`}
+      >
         <View>
           <Tab
             name={firstTab}
@@ -55,7 +74,13 @@ const TabContent: React.FC<TabContentProps> = ({
           />
         </View>
       </View>
-      <View className="bg-white w-full h-full rounded-t-3xl">{children}</View>
+      <View
+        className={`${
+          isDark ? "bg-gray" : "bg-white"
+        } w-full h-full rounded-t-3xl`}
+      >
+        {children}
+      </View>
     </>
   );
 };
