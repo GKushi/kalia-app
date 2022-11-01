@@ -43,4 +43,10 @@ declare global {
     text: string;
     ms: number;
   }
+  type Theme = "default" | "dark" | "light";
+  interface IThemeContext {
+    themeState: Theme | null;
+    isDark: boolean;
+    changeTheme: (theme: Theme) => Promise<void>;
+  }
 }

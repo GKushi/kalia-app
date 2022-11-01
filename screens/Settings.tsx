@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,7 @@ import Currency from "@/components/modal/Currency";
 import Language from "@/components/modal/Language";
 import Alerts from "@/components/modal/Alerts";
 import Modal from "@/components/modal/Modal";
+import { ThemeContext } from "@/settings/ThemeContext";
 
 interface SettingsProps {
   setShowTabBar: Dispatch<SetStateAction<boolean>>;
@@ -23,6 +24,7 @@ const Settings: React.FC<SettingsProps> = ({ setShowTabBar }) => {
   const [modal, setTitle, toggleIsShowing] = useModal(setShowTabBar);
   const [modalContent, setModalContent] = useState<string>("");
   const { t } = useTranslation();
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
 
   // open modal
   const toggleModal = (name: string) => {
@@ -70,7 +72,7 @@ const Settings: React.FC<SettingsProps> = ({ setShowTabBar }) => {
 
   return (
     <>
-      <SafeAreaView className="bg-blue h-full">
+      <SafeAreaView className={`${isDark ? "bg-black" : "bg-blue"} h-full`}>
         <View className="items-center py-8">
           <Text className="font-bold text-white text-2xl">{t("settings")}</Text>
         </View>

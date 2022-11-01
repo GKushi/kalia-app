@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Swipable from "react-native-gesture-handler/Swipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useTranslation } from "react-i18next";
 import { convertDateToString } from "@/utils/utils";
+import { ThemeContext } from "@/settings/ThemeContext";
 
 interface DebtCardProps {
   title: string | null;
@@ -33,6 +34,7 @@ const DebtCard: React.FC<DebtCardProps> = ({
   rightSwipe,
 }) => {
   const { t } = useTranslation();
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
   // left slide button
   const leftActions = () => {
     if (!leftSwipe) return null;
@@ -96,13 +98,23 @@ const DebtCard: React.FC<DebtCardProps> = ({
           friction={2}
         >
           <View
-            className={`bg-white rounded-2xl items-center w-full border-[1px] ${
-              isUrgent() ? "border-danger" : "border-blue"
+            className={`${
+              isDark ? "bg-gray" : "bg-white"
+            } rounded-2xl items-center w-full border-[1px] ${
+              isUrgent()
+                ? "border-danger"
+                : isDark
+                ? "border-white"
+                : "border-blue"
             } h-[100px] flex-row space-x-2`}
           >
             <View
               className={`h-full border-[1px] ${
-                isUrgent() ? "border-danger" : "border-blue"
+                isUrgent()
+                  ? "border-danger"
+                  : isDark
+                  ? "border-white"
+                  : "border-blue"
               } rounded-2xl justify-center items-center px-2 w-[40%]`}
             >
               <Text
@@ -115,18 +127,38 @@ const DebtCard: React.FC<DebtCardProps> = ({
               </Text>
             </View>
             <View className="h-full max-w-[50%] justify-center">
-              <Text className="text-2xl font-bold" numberOfLines={1}>
+              <Text
+                className={`${
+                  isDark ? "text-white" : "text-black"
+                } text-2xl font-bold`}
+                numberOfLines={1}
+              >
                 {title}
               </Text>
-              <Text className="text-sm font-medium" numberOfLines={1}>
+              <Text
+                className={`${
+                  isDark ? "text-white" : "text-black"
+                } text-sm font-medium`}
+                numberOfLines={1}
+              >
                 {name}
               </Text>
-              <Text className="text-[10px]" numberOfLines={1}>
+              <Text
+                className={`${
+                  isDark ? "text-white" : "text-black"
+                } text-[10px]`}
+                numberOfLines={1}
+              >
                 {`${t("paymentDate")} ${
                   endDate ? convertDateToString(endDate) : "--"
                 }`}
               </Text>
-              <Text className="text-[10px]" numberOfLines={1}>
+              <Text
+                className={`${
+                  isDark ? "text-white" : "text-black"
+                } text-[10px]`}
+                numberOfLines={1}
+              >
                 {`${t("from")} ${
                   startDate ? convertDateToString(startDate) : "--"
                 }`}

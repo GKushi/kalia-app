@@ -2,8 +2,9 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import * as Local from "expo-localization";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import translations from "@/settings/translations";
 import Toast from "react-native-toast-message";
+import { LocaleConfig } from "react-native-calendars";
+import translations from "@/settings/translations";
 
 // custom language detector
 const languageDetector: any = {
@@ -43,6 +44,7 @@ const languageDetector: any = {
         type: "error",
       })
     );
+    LocaleConfig.defaultLocale = lng;
   },
 };
 

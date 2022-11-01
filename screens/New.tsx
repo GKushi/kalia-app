@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
 import { TouchableOpacity, View, ScrollView, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DateData } from "react-native-calendars";
@@ -16,6 +22,7 @@ import { convertDateToString } from "@/utils/utils";
 import { Item } from "@/types/global.d";
 import { getCurrency, currency as allCurrency } from "@/settings/currency";
 import { scheduleNotifications } from "@/settings/alerts";
+import { ThemeContext } from "@/settings/ThemeContext";
 
 interface NewProps {
   setShowTabBar: Dispatch<SetStateAction<boolean>>;
@@ -35,8 +42,11 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
   const [startTime, setStartTime] = useState<DateObj>();
   const [endTime, setEndTime] = useState<DateObj>();
   const [secondClick, setSecondClick] = useState<boolean>(true);
+  // validation
+  const [error, setError] = useState<(string | number)[]>([]);
 
   const { t } = useTranslation();
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
 
   // reset form values
   const resetValues = (): void => {
@@ -73,8 +83,13 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
       end: endTime?.timestamp ? endTime.timestamp : null,
     };
     // item validation
+    setError([]);
     const validation = Item.omit({ id: true }).safeParse(newItem);
     if (validation.success === false) {
+      validation.error.errors.map((e) => {
+        setError((prev) => prev.concat(e.path));
+      });
+
       Toast.show({
         type: "error",
         text1: t("validationError"),
@@ -216,7 +231,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
 
   return (
     <>
-      <SafeAreaView className="bg-blue h-full">
+      <SafeAreaView className={`${isDark ? "bg-black" : "bg-blue"} h-full`}>
         <View className="items-center py-8">
           <Text className="font-bold text-white text-2xl">{t("addNew")}</Text>
         </View>
@@ -238,6 +253,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                     type="person"
                     value={person}
                     setValue={setPerson}
+                    error={error.find((obj) => obj === "person") ? true : false}
                   />
                 </View>
                 <View>
@@ -248,6 +264,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                     setValue={setAmount}
                     onAmountPress={() => toggleModal("currency")}
                     currency={currency}
+                    error={error.find((obj) => obj === "value") ? true : false}
                   />
                 </View>
                 <View>
@@ -283,6 +300,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                     type="person"
                     value={person}
                     setValue={setPerson}
+                    error={error.find((obj) => obj === "person") ? true : false}
                   />
                 </View>
                 <View>
@@ -293,6 +311,7 @@ const New: React.FC<NewProps> = ({ setShowTabBar }) => {
                     setValue={setAmount}
                     onAmountPress={() => toggleModal("currency")}
                     currency={currency}
+                    error={error.find((obj) => obj === "value") ? true : false}
                   />
                 </View>
                 <View>

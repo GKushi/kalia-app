@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
@@ -7,12 +7,14 @@ import { useTranslation } from "react-i18next";
 import DebtCard from "@/components/DebtCard";
 import TabContent from "@/components/TabContent";
 import { getItems, deleteItem, setItemDone } from "@/utils/database";
+import { ThemeContext } from "@/settings/ThemeContext";
 
 const List: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>("first");
   const [debts, setDebts] = useState<Item[] | undefined>();
   const [dues, setDues] = useState<Item[] | undefined>();
   const { t } = useTranslation();
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
 
   // change active tab
   const handleTabPress = (tab: ActiveTab): void => {
@@ -79,7 +81,7 @@ const List: React.FC = () => {
   );
 
   return (
-    <SafeAreaView className="bg-blue h-full">
+    <SafeAreaView className={`${isDark ? "bg-black" : "bg-blue"} h-full`}>
       <View className="h-12" />
       <TabContent
         firstTab={t("debts")}

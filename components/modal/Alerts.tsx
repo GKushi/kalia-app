@@ -1,20 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import DropDownPicker, { ItemType } from "react-native-dropdown-picker";
 import { useTranslation } from "react-i18next";
 import {
-  style,
+  lightStyle,
+  darkStyle,
   containerStyle,
-  dropDownContainerStyle,
+  lightDropDownContainerStyle,
+  darkDropDownContainerStyle,
+  lightText,
+  darkText,
 } from "@/components/modal/dropDownStyle";
 import { getAlert, alerts, setAlert } from "@/settings/alerts";
+import { ThemeContext } from "@/settings/ThemeContext";
 
-interface AlertsProps {}
-const Alerts: React.FC<AlertsProps> = () => {
+const Alerts: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [items, setItems] = useState<ItemType<string>[]>([]);
   const [value, setValue] = useState<string | null>(null);
   const { t } = useTranslation();
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
 
   // fetchin default alerts for initial picker value
   const getCurrentAlert = async (): Promise<void> => {
@@ -57,12 +62,21 @@ const Alerts: React.FC<AlertsProps> = () => {
   return (
     <View className="space-y-3">
       <View className="flex-row items-center">
-        <Text className="text-xl w-4/6">{t("alertTime")}</Text>
+        <Text
+          className={`${isDark ? "text-white" : "text-black"} text-xl w-4/6`}
+        >
+          {t("alertTime")}
+        </Text>
         <View className="w-2/6">
           <DropDownPicker
-            style={style}
+            style={isDark ? darkStyle : lightStyle}
             containerStyle={containerStyle}
-            dropDownContainerStyle={dropDownContainerStyle}
+            dropDownContainerStyle={
+              isDark ? darkDropDownContainerStyle : lightDropDownContainerStyle
+            }
+            textStyle={isDark ? lightText : darkText}
+            listItemLabelStyle={isDark ? lightText : darkText}
+            theme={isDark ? "DARK" : "LIGHT"}
             open={open}
             value={value}
             items={items}

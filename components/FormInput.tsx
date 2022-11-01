@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useContext } from "react";
 import {
   View,
   TextInput,
@@ -14,6 +14,7 @@ import {
   CalendarIcon,
   ChevronDownIcon,
 } from "react-native-heroicons/outline";
+import { ThemeContext } from "@/settings/ThemeContext";
 
 interface FormInputProps {
   label: string;
@@ -23,6 +24,7 @@ interface FormInputProps {
   onTextPress?: () => void;
   onAmountPress?: () => void;
   currency?: string | null;
+  error?: boolean;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -33,11 +35,13 @@ const FormInput: React.FC<FormInputProps> = ({
   value,
   setValue,
   currency,
+  error,
 }) => {
+  const { isDark } = useContext(ThemeContext) || ({} as IThemeContext);
   // render left side icon
   const icon = (type: string): JSX.Element | null => {
     const iconProps: iconProps = {
-      color: "#B0B8DB",
+      color: isDark ? "#FCFCFC" : "#B0B8DB",
       size: "24",
     };
     switch (type) {
@@ -65,7 +69,13 @@ const FormInput: React.FC<FormInputProps> = ({
 
   return (
     <View className="space-y-1">
-      <Text className="font-medium text-sm text-black ml-5">{label}</Text>
+      <Text
+        className={`font-medium text-sm ${
+          error ? "text-danger" : isDark ? "text-white" : "text-black"
+        } ml-5`}
+      >
+        {label}
+      </Text>
       <View className="relative">
         <Pressable
           onPress={() => {
@@ -73,9 +83,11 @@ const FormInput: React.FC<FormInputProps> = ({
           }}
         >
           <TextInput
-            className={`border-[1px] border-blue rounded-3xl text-xl h-14 px-14 text-black ${
-              Platform.OS === "ios" && "pb-1"
-            }`}
+            className={`border-[1px] ${
+              error ? "border-danger" : isDark ? "border-white" : "border-blue"
+            } rounded-3xl text-xl h-14 px-14 ${
+              isDark ? "text-white" : "text-black"
+            } ${Platform.OS === "ios" && "pb-1"}`}
             value={value}
             onChangeText={(text) => {
               setValue && setValue(text);
@@ -96,8 +108,14 @@ const FormInput: React.FC<FormInputProps> = ({
               onAmountPress && onAmountPress();
             }}
           >
-            <Text className="text-black font-medium text-lg">{currency}</Text>
-            <ChevronDownIcon color="#2F3648" size={20} />
+            <Text
+              className={`${
+                isDark ? "text-white" : "text-black"
+              } font-medium text-lg`}
+            >
+              {currency}
+            </Text>
+            <ChevronDownIcon color={isDark ? "#FCFCFC" : "#2F3648"} size={20} />
           </Pressable>
         )}
       </View>
