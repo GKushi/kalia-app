@@ -65,6 +65,6 @@ export const scheduleNotifications = async (
       title: "Kalia",
       body: type === "debt" ? t("debtNotification") : t("dueNotification"),
     },
-    trigger: end,
+    trigger: end + 43200000,
   });
 };
